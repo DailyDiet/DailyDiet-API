@@ -1,5 +1,7 @@
+import os
+
 class Config(object):
-    SECRET_KEY = b'ZGRbIHvAxp-Yl0TsoXbfLA'
+    SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 class DevelopmentConfig(Config):
