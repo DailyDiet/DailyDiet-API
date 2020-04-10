@@ -1,7 +1,9 @@
-from flask import Flask
 from os import getenv
+
+from flask import Flask
+
+from calculator import calculator
 from extentions import mongo
-from calculator.calculator import calculator
 
 
 def create_app(environment='Development'):
