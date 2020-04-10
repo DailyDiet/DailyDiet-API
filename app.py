@@ -1,7 +1,7 @@
 from flask import Flask
 from os import getenv
 from extentions import mongo
-from flask_pymongo import pymongo
+from calculator.calculator import calculator
 
 
 def create_app(environment='Development'):
@@ -10,6 +10,7 @@ def create_app(environment='Development'):
     """
     app = Flask(__name__)
     app.config.from_object(f'config.{environment}Config')
+    app.register_blueprint(calculator)
     mongo.init_app(app)
     return app
 

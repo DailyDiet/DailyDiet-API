@@ -9,7 +9,7 @@ class Config(object):
 
 
 class DevelopmentConfig(Config):
-    FLASK_DEBUG = True
+    DEBUG = True
 
 
 class ProductionConfig(Config):
