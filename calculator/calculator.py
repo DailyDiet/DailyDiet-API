@@ -5,6 +5,12 @@ from flask import Blueprint
 calculator = Blueprint('calculator', __name__)
 
 
+# temporary todo:remove temp main
+@calculator.route('/', methods=['GET'])
+def temp_main():
+    return '<h1>daily diet api</h1>'
+
+
 @calculator.route('/calculator/bmi', methods=['POST'])
 def calculate_bmi():
     form = BMIForm()

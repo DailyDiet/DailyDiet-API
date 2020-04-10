@@ -18,6 +18,8 @@ def create_app(environment='Development'):
 if __name__ == '__main__':
     env = getenv('DAILYDIET_ENV')
     if env is None:
-        create_app().run()
+        app = create_app()
     else:
-        create_app(env).run()
+        app = create_app(env)
+
+    app.run()
