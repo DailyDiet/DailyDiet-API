@@ -8,7 +8,7 @@ method: `POST`
 
 *input*:
 
-- height in centimiters
+- height in centimeters
 - weight in kilograms
 
 ```json
