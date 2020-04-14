@@ -1,6 +1,8 @@
 # DailyDiet
+you can access website at [daily-diet-aut.herokuapp.com](https://daily-diet-aut.herokuapp.com/)
+and this api is deployed on heroku at [dailydiet-api.herokuapp.com](https://dailydiet-api.herokuapp.com/)
 
-## Setup and Run
+## Setup and Run on local machine
 
 1. install packages with `pip install -r requirements.txt`
 
