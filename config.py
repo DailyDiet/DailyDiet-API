@@ -10,10 +10,12 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    CORS_RESOURCES = {'*': {'origins': '*'}}
 
 
 class ProductionConfig(Config):
     FLASK_DEBUG = False
+    CORS_RESOURCES = {'https://daily-diet-aut.herokuapp.com/': {'origins': '*'}}
 
 
 class TestingConfig(Config):
