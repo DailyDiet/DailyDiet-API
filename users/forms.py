@@ -1,11 +1,11 @@
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import PasswordField, TextField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 from users.models import User
 
 
-class RegisterForm(Form):
+class RegisterForm(FlaskForm):
     class Meta:
         csrf = False
 
@@ -25,7 +25,7 @@ class RegisterForm(Form):
         return True
 
 
-class LoginForm(Form):
+class LoginForm(FlaskForm):
     class Meta:
         csrf = False
 
@@ -33,9 +33,10 @@ class LoginForm(Form):
     password = PasswordField('password', validators=[DataRequired()])
 
 
-class ChangePasswordForm(Form):
+class ChangePasswordForm(FlaskForm):
     class Meta:
         csrf = False
 
-    password = PasswordField('password', validators=[DataRequired(), Length(min=6, max=25)])
-    confirm_password = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password', message='Passwords must match.')])
+    old_password = PasswordField('old password', validators=[DataRequired(), Length(min=6, max=25)])
+    new_password = PasswordField('new password', validators=[DataRequired(), Length(min=6, max=25)])
+    confirm_password = PasswordField('repeat password', validators=[DataRequired(), EqualTo('new_password', message='passwords must match')])
