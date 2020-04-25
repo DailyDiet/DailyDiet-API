@@ -30,17 +30,11 @@ class User(db.Model):
         self.Confirmed = confirmed
         self.ConfirmedOn = confirmed_on
 
-    def is_authenticated(self):
-        return True
+    def set_password(self, password):
+        self.Password = generate_password_hash(password)
 
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return self.id
+    def check_password(self, password):
+        return check_password_hash(self.Password, password)
 
     def __repr__(self):
         return f'<Email {self.Email}>'
