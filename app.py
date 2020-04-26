@@ -6,7 +6,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
 from calculator import calculator
-from extentions import db, jwt, migrate
+from extentions import db, jwt, migrate, mail
 from users import users
 
 
@@ -27,6 +27,7 @@ def create_app(environment='Development'):
     db.init_app(app)
     migrate.init_app(app)
     jwt.init_app(app)
+    mail.init_app(app)
 
     CORS(app, resources=app.config['CORS_RESOURCES'])
     
