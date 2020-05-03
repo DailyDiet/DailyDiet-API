@@ -2,9 +2,12 @@ from os import getenv
 
 from flask import Flask
 from flask_cors import CORS
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 
 from calculator import calculator
-from extentions import mongo
+from extentions import db, jwt, migrate, mail
+from users import users
 
 
 def create_app(environment='Development'):
@@ -13,11 +16,21 @@ def create_app(environment='Development'):
     """
     if environment is None:
         environment = 'Development'
+        
     app = Flask(__name__)
+
     app.config.from_object(f'config.{environment}Config')
+
     app.register_blueprint(calculator)
-    mongo.init_app(app)
+    app.register_blueprint(users)   
+
+    db.init_app(app)
+    migrate.init_app(app)
+    jwt.init_app(app)
+    mail.init_app(app)
+
     CORS(app, resources=app.config['CORS_RESOURCES'])
+    
     return app
 
 
