@@ -1,6 +1,5 @@
 from flask_mail import Message
 
-from app import app
 from extentions import mail
 
 

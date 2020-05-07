@@ -5,3 +5,4 @@ felan.txt
 .vscode/
 __pycache__
 .DS_Store
+DATABASE_CREDENTIALS.txt

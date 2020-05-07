@@ -1,6 +1,6 @@
 from itsdangerous import URLSafeTimedSerializer
 
-from app import app
+from config import Config
 
 
 def generate_confirmation_token(email):
@@ -13,9 +13,9 @@ def confirm_token(token, expiration=3600):
     try:
         email = serializer.loads(
             token,
-            salt=app.config['SECURITY_PASSWORD_SALT'],
+            salt= Config['SECURITY_PASSWORD_SALT'],
             max_age=expiration
         )
     except:
-        return False         
+        return False
     return email

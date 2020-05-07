@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from calculator import calculator
 from extentions import db, jwt, migrate, mail
 from users import users
+from foods import foods
 
 
 def create_app(environment='Development'):
@@ -22,7 +23,8 @@ def create_app(environment='Development'):
     app.config.from_object(f'config.{environment}Config')
 
     app.register_blueprint(calculator)
-    app.register_blueprint(users)   
+    app.register_blueprint(users)
+    app.register_blueprint(foods)
 
     db.init_app(app)
     migrate.init_app(app)
