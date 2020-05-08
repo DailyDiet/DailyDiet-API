@@ -2,6 +2,8 @@ import unittest
 import requests
 import json
 
+ip = getenv('TEST_URL')
+
 class TestDiet(unittest.TestCase):
 
     def test_sevade(self):
