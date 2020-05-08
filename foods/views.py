@@ -2,7 +2,7 @@ from foods import foods
 from foods.utils import get_foods_with_categories
 from foods.diet import sevade
 
-@foods.route('/sevade', methods=['GET'])
+@foods.route('/sevade/<calorie>', methods=['GET'])
 def get_sevade(calorie):
     cats1 = ['breakfast']
     cats2 = ['mostly_meat', 'pasta', 'main_dish', 'sandwich']
