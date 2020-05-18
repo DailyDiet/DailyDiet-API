@@ -98,3 +98,8 @@ def change_password():
     user.set_password(form.new_password.data)
     db.session.commit()
     return {}, 204
+
+@users.route('/get_users', methods=['GET'])
+def get_users():
+    user = User.query.filter_by(FullName='torobche')
+    return {'chiz': 'ye chiz chert'}, 403
