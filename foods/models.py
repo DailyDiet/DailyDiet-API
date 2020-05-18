@@ -31,7 +31,7 @@ class Food(db.Model):
             category:{category},
             image:{image},
             title:{title}
-        }""".format(id=self.id, calories=self.Calorie, fat=self.Fat,
+        }""".format(id=self.id, calories=self.Calories, fat=self.Fat,
                     fiber=self.Fiber, protein=self.Protein, category=self.Category,
                     image=self.Image, title=self.Title)
 
