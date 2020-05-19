@@ -17,10 +17,23 @@ def create_app(environment='Development'):
     """
     if environment is None:
         environment = 'Development'
-        
+
     app = Flask(__name__)
 
     app.config.from_object(f'config.{environment}Config')
+
+    @app.route('/', methods=['GET'])
+    def temp_main_function():
+        """
+        temporary main function to test app, debug and testing status
+        :return: status:dict
+        """
+        return {
+            'status': 'API is up and running:))',
+            'ENV': app.config['ENV'],
+            'DEBUG': app.config['DEBUG'],
+            'TESTING': app.config['TESTING']
+        }
 
     app.register_blueprint(calculator)
     app.register_blueprint(users)
@@ -32,7 +45,7 @@ def create_app(environment='Development'):
     mail.init_app(app)
 
     CORS(app, resources=app.config['CORS_RESOURCES'])
-    
+
     return app
 
 

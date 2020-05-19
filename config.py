@@ -26,7 +26,7 @@ class Config(object):
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
 
 class DevelopmentConfig(Config):
-    DEBUG = True
+    FLASK_DEBUG = True
     CORS_RESOURCES = {'*': {'origins': '*'}}
 
 
@@ -36,7 +36,7 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    FLASK_DEBUG = False
+    FLASK_DEBUG = True
     CORS_RESOURCES = {'https://daily-diet-aut.herokuapp.com/': {'origins': '*'}}
 
 
