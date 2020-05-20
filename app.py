@@ -53,4 +53,5 @@ def create_app(environment='Development'):
 app = create_app(environment=getenv('DAILYDIET_ENV'))
 
 if __name__ == '__main__':
-    app.run()
+    app.debug = True
+    app.run(host="0.0.0.0")
