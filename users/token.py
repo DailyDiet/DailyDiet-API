@@ -1,5 +1,6 @@
 from itsdangerous import URLSafeTimedSerializer
 
+from app import app
 from config import Config
 
 
