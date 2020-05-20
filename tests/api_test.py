@@ -2,8 +2,7 @@ import unittest
 import requests
 from os import getenv
 
-# ip = getenv('TEST_URL')
-# ip = 'http://127.0.0.1:5000'
+ip = 'https://dailydiet-api.herokuapp.com/'
 
 class TestAPI(unittest.TestCase):
 

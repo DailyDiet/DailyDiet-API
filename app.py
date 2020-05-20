@@ -1,5 +1,5 @@
 from os import getenv
-
+from werkzeug.debug import DebuggedApplication
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
@@ -47,11 +47,13 @@ def create_app(environment='Development'):
 
     CORS(app, resources=app.config['CORS_RESOURCES'])
 
+    if app.debug:
+        app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
+
     return app
 
 
 app = create_app(environment=getenv('DAILYDIET_ENV'))
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run(host="0.0.0.0")
+    app.run()

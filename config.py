@@ -3,6 +3,7 @@ import os
 
 load_dotenv()
 
+
 class Config(object):
     SECRET_KEY = os.getenv('SECRET_KEY')
     SECURITY_PASSWORD_SALT = os.getenv('SECURITY_PASSWORD_SALT')
@@ -25,6 +26,7 @@ class Config(object):
     # mail accounts
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
 
+
 class DevelopmentConfig(Config):
     FLASK_DEBUG = True
     CORS_RESOURCES = {'*': {'origins': '*'}}
@@ -38,5 +40,3 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     FLASK_DEBUG = True
     CORS_RESOURCES = {'https://daily-diet-aut.herokuapp.com/': {'origins': '*'}}
-
-
