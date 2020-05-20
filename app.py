@@ -23,11 +23,12 @@ def create_app(environment='Development'):
     app.config.from_object(f'config.{environment}Config')
 
     @app.route('/', methods=['GET'])
-    def temp_main_function():
+    def temp_main_function() :
         """
         temporary main function to test app, debug and testing status
         :return: status:dict
         """
+        raise BaseException(message='some exception')
         return {
             'status': 'API is up and running:))',
             'ENV': app.config['ENV'],
