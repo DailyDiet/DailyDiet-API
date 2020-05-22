@@ -23,7 +23,7 @@ def get_sevade(calorie):
         return jsonify({'diet': [str(catdog[0]), str(catdog[1]), str(catdog[2]), catdog[3]]}), 200
 
 
-@foods.route('/recipe/<int:id>')
+@foods.route('/recipe/<int:id>', methods=['GET'])
 def get_recipe(id):
     food = Food.query.get(id)
     if food is None:
@@ -34,3 +34,12 @@ def get_recipe(id):
         return jsonify({"error": "recipe not found."}), 404
 
     return jsonify(recipe)
+
+
+@foods.route('/<int:id>', methods=['GET'])
+def get_food(id):
+    food = Food.query.get(id)
+    if food is None:
+        return jsonify({"error": "food not found."}), 404
+
+    return str(food)
