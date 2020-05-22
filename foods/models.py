@@ -1,7 +1,7 @@
 import datetime
 
-from sqlalchemy import Column, Integer, REAL, CHAR, VARCHAR, TIMESTAMP
-
+from sqlalchemy import Column, Integer, REAL, CHAR, VARCHAR, TIMESTAMP, TEXT
+import json
 from extentions import db
 
 
@@ -17,6 +17,21 @@ class Food(db.Model):
     Image = Column('image', VARCHAR(400), default=None)
     Title = Column('title', VARCHAR(200), nullable=False)
     CreatedAt = Column('created_at', TIMESTAMP())
+
+    # should not be accessed directly, use `recipe` property insted
+    # this column will be deprecated soon
+    Recipe = Column('recipe', TEXT())
+
+    @property
+    def recipe(self):
+        if self.Recipe is None or self.Recipe == '':
+            return None
+        else:
+            payload = json.loads(self.Recipe)
+            payload['category'] = self.Category
+            payload['date_created'] = self.CreatedAt.strftime('%Y-%m-%d %H:%M:%S')
+            return payload
+
 
     def __repr__(self):
         return f"<Food '{self.Title}'>"
