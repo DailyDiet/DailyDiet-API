@@ -23,6 +23,6 @@ def confirmed_only(function):
         if not user:
             return {'error': 'User not found.'}, 404
         if not user.Confirmed:
-            return {'error': 'Your account is not activated.'}
+            return {'error': 'Your account is not activated.'}, 400
         return function(*args, **kwargs)
     return decorator
