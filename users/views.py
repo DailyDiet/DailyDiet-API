@@ -70,7 +70,7 @@ def login():
 @jwt_refresh_token_required
 def get_new_access_token():
     identity = get_jwt_identity()
-    return {'access_token': f'{create_access_token(identity=identity)}'}
+    return {'access_token': f'{create_access_token(identity=identity)}'}, 200
 
 
 @users.route('/signup/resendConfrimation', methods=['GET'])
@@ -99,6 +99,14 @@ def change_password():
     db.session.commit()
     return {}, 204
 
+
+@users.route('/signout', methods=['PATCH'])
+def log_out():
+    identity = get_jwt_identity()
+    user = User.query.filter_by(Email=identity).first()
+    return {}, 204
+
+
 @users.route('/get_user', methods=['GET'])
 @jwt_required
 def get_user():
@@ -107,4 +115,4 @@ def get_user():
     return {'full_name': f'{user.FullName}', 
             'email': f'{user.Email}',
             'confirmed': f'{user.Confirmed}'}
-      
+  

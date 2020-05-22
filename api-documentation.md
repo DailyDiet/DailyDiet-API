@@ -490,6 +490,26 @@ or
 
 ----------
 
+### `/users/log_out`
+
+method: `PATCH`
+
+*input*:
+Authorization Header:
+
+- Bearer \<access token>
+
+Body:
+
+- None
+
+*output*:
+
+response code will be **204**
+
+- The server successfully processed the request and is not returning any content.
+
+----------
 
 ### `/users/get_user`
 
