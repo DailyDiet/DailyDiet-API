@@ -441,7 +441,7 @@ response code will be **204**
 }
 ```
 
-2- response code will be **422**
+2t- response code will be **422**
 
 ```json
 {
@@ -482,7 +482,7 @@ response code will be **204**
 
 ----------
 
-### `/users/signup/modify`
+### `/users/get_user
 
 method: `PATCH`
 
