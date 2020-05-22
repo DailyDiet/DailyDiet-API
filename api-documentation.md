@@ -489,3 +489,41 @@ or
 ```
 
 ----------
+
+
+### `/users/get_user`
+
+method: `GET`
+
+*input*:
+Authorization Header:
+
+- Bearer \<access token>
+
+Body:
+
+- None
+
+*output*:
+
+response code will be **200**
+
+```json
+{
+  "confirmed": "False",
+  "email": "naghi.mamouli@gmail.com",
+  "full_name": "Naghi Mamouli"
+}
+```
+
+*in case of errors*:
+
+response code will be **401**
+
+```json
+{
+  "msg": "Token has expired"
+}
+```
+
+----------

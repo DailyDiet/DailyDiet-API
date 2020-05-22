@@ -99,7 +99,12 @@ def change_password():
     db.session.commit()
     return {}, 204
 
-@users.route('/get_users', methods=['GET'])
-def get_users():
-    user = User.query.filter_by(FullName='torobche')
-    return {'chiz': 'ye chiz chert'}, 403
+@users.route('/get_user', methods=['GET'])
+@jwt_required
+def get_user():
+    identity = get_jwt_identity()
+    user = User.query.filter_by(Email=identity).first()
+    return {'full_name': f'{user.FullName}', 
+            'email': f'{user.Email}',
+            'confirmed': f'{user.Confirmed}'}
+      
