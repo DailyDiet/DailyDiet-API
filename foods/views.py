@@ -42,4 +42,4 @@ def get_food(id):
     if food is None:
         return jsonify({"error": "food not found."}), 404
 
-    return str(food)
+    return jsonify(food.simple_view)
