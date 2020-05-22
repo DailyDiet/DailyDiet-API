@@ -1,6 +1,9 @@
 from foods import foods
+from flask import jsonify
 from foods.utils import get_foods_with_categories
 from foods.diet import sevade
+from .models import Food
+
 
 @foods.route('/sevade/<calorie>', methods=['GET'])
 def get_sevade(calorie):
@@ -15,6 +18,28 @@ def get_sevade(calorie):
     catdog = sevade(dogs1, dogs2, dogs3, calorie)
 
     if catdog is None:
-        return {'error': 'Not Found'}, 404
+        return jsonify({'error': 'Not Found'}), 404
     else:
-        return {'diet': [str(catdog[0]), str(catdog[1]), str(catdog[2]), catdog[3]]}, 200
+        return jsonify({'diet': [str(catdog[0]), str(catdog[1]), str(catdog[2]), catdog[3]]}), 200
+
+
+@foods.route('/recipe/<int:id>', methods=['GET'])
+def get_recipe(id):
+    food = Food.query.get(id)
+    if food is None:
+        return jsonify({"error": "food not found."}), 404
+
+    recipe = food.recipe
+    if recipe is None:
+        return jsonify({"error": "recipe not found."}), 404
+
+    return jsonify(recipe)
+
+
+@foods.route('/<int:id>', methods=['GET'])
+def get_food(id):
+    food = Food.query.get(id)
+    if food is None:
+        return jsonify({"error": "food not found."}), 404
+
+    return jsonify(food.simple_view)
