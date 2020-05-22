@@ -433,22 +433,7 @@ response code will be **204**
 
 *in case of errors*:
 
-1- response code will be **400**
-
-```json
-{
-  "errors": {
-    "confirm_password": [
-      "passwords must match"
-    ],
-    "new_password": [
-      "Field must be between 6 and 25 characters long."
-    ]
-  }
-}
-```
-
-2- response code will be **401**
+1- response code will be **401**
 
 ```json
 {
@@ -456,15 +441,7 @@ response code will be **204**
 }
 ```
 
-3- response code will be **403**
-
-```json
-{
-  "error": "Old password does not match."
-}
-```
-
-4- response code will be **422**
+2- response code will be **422**
 
 ```json
 {
@@ -485,6 +462,58 @@ or
 ```json
 {
   "msg": "Not enough segments"
+}
+```
+
+----------
+### `/users/signout`
+
+method: `PATCH`
+
+*input*:
+
+- None
+
+*output*:
+
+response code will be **204**
+
+- The server successfully processed the request and is not returning any content.
+
+----------
+
+### `/users/signup/modify`
+
+method: `PATCH`
+
+*input*:
+Authorization Header:
+
+- Bearer \<access token>
+
+Body:
+
+- None
+
+*output*:
+
+response code will be **200**
+
+```json
+{
+  "confirmed": "False",
+  "email": "mohammadhossein.malekpour@gmail.com",
+  "full_name": "Mohammad Hossein Malekpour"
+}
+```
+
+*in case of errors*:
+
+1- response code will be **401**
+
+```json
+{
+  "msg": "Token has expired"
 }
 ```
 

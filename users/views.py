@@ -114,5 +114,5 @@ def get_user():
     user = User.query.filter_by(Email=identity).first()
     return {'full_name': f'{user.FullName}', 
             'email': f'{user.Email}',
-            'confirmed': f'{user.Confirmed}'}
+            'confirmed': f'{user.Confirmed}'}, 200
   
