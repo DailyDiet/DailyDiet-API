@@ -19,6 +19,7 @@ class Food(db.Model):
     CreatedAt = Column('created_at', TIMESTAMP())
 
     # should not be accessed directly, use `recipe` property insted
+    # this column will be deprecated soon
     Recipe = Column('recipe', TEXT())
 
     @property
