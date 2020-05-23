@@ -2,6 +2,7 @@ import datetime
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import Column, Integer, REAL, CHAR, VARCHAR, TIMESTAMP, TEXT
 import json
+from flask_admin.contrib.sqla import ModelView
 from flask import jsonify
 from extentions import db
 
@@ -60,3 +61,5 @@ class Food(db.Model):
 
     def __str__(self):
         return json.dumps(self.simple_view)
+
+
