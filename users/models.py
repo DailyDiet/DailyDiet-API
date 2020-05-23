@@ -5,6 +5,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from extentions import db
 
+from flask_admin.contrib.sqla import ModelView
+
 
 class User(db.Model):
     __tablename__ = "users"
@@ -17,6 +19,7 @@ class User(db.Model):
     RegisteredOn = Column(DateTime(), nullable=False)
     Confirmed = Column(Boolean(), nullable=False, default=False)  # Confirmed Email Address Or Not
     ConfirmedOn = Column(DateTime(), nullable=True)
+    FoodSet = db.relationship('Food', backref='author', lazy=True)
 
     def __init__(self, full_name, email, password, admin=False,
                  registerd_on=None, confirmed=False, confirmed_on=None):
@@ -36,3 +39,7 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<Email {self.Email}>'
+
+
+class UserModelView(ModelView):
+    pass

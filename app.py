@@ -4,11 +4,10 @@ from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-
 from calculator import calculator
-from extentions import db, jwt, migrate, mail,admin
-from users import users,models as user_models
-from foods import foods,models as food_models
+from extentions import db, jwt, migrate, mail, admin
+from users import users, models as user_models
+from foods import foods, models as food_models
 
 
 def create_app(environment='Development'):
@@ -23,7 +22,7 @@ def create_app(environment='Development'):
     app.config.from_object(f'config.{environment}Config')
 
     @app.route('/', methods=['GET'])
-    def temp_main_function() :
+    def temp_main_function():
         """
         temporary main function to test app, debug and testing status
         :return: status:dict
@@ -45,11 +44,11 @@ def create_app(environment='Development'):
     mail.init_app(app)
     admin.init_app(app)
 
-    #adding models to admin
-    admin.add_view(ModelView(user_models.User, db.session))
-    admin.add_view(ModelView(food_models.Food, db.session))
+    # adding models to admin
+    admin.add_view(user_models.UserModelView(user_models.User, db.session,endpoint='user_admin'))
+    admin.add_view(food_models.FoodModelView(food_models.Food, db.session,endpoint='food_admin'))
 
-    #configing CORS settings
+    # configuring CORS settings
     CORS(app, resources=app.config['CORS_RESOURCES'])
 
     if app.debug:

@@ -1,10 +1,11 @@
 import datetime
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import Column, Integer, REAL, CHAR, VARCHAR, TIMESTAMP, TEXT
+from sqlalchemy import Column, Integer, REAL, CHAR, VARCHAR, TIMESTAMP, TEXT, ForeignKey
 import json
 from flask_admin.contrib.sqla import ModelView
 from flask import jsonify
 from extentions import db
+from wtforms import SelectField
 
 
 class Food(db.Model):
@@ -15,19 +16,24 @@ class Food(db.Model):
     Fat = Column('fat', REAL())
     Fiber = Column('fiber', REAL())
     Protein = Column('protein', REAL())
-    _Category = Column('category', CHAR(20), nullable=False)
+    Category = Column('category', VARCHAR(20), nullable=False)
     Image = Column('image', VARCHAR(400), default=None)
     Thumbnail = Column('thumbnail', VARCHAR(400), default=None)
     Title = Column('title', VARCHAR(200), nullable=False)
     CreatedAt = Column('created_at', TIMESTAMP())
+    AuthorId = Column('author', Integer(), ForeignKey('users.id'), nullable=False)
 
     # should not be accessed directly, use `recipe` property insted
     # this column will be deprecated soon
     Recipe = Column('recipe', TEXT())
 
-    @hybrid_property
-    def Category(self):
-        return self._Category.strip()
+    # @hybrid_property
+    # def Category(self):
+    #     return self._Category.strip()
+    #
+    # @Category.setter
+    # def category_setter(self, category):
+    #     self._Category = category
 
     @property
     def recipe(self):
@@ -63,3 +69,27 @@ class Food(db.Model):
         return json.dumps(self.simple_view)
 
 
+# for admin integration
+class FoodModelView(ModelView):
+    column_display_pk = True
+    can_view_details = True
+    column_exclude_list = ['Recipe']
+    column_searchable_list = ['Title', 'Category']
+    column_filters = ['Calories', 'Fiber', 'Fat', 'Protein']
+    create_modal = True
+    edit_modal = True
+
+    form_choices = {
+        'Category': [(item, item.replace('_', ' ')) for item in [
+            'mostly_meat',
+            'appetizers',
+            'drink',
+            'main_dish',
+            'sandwich',
+            'dessert',
+            'breakfast',
+            'protein_shake',
+            'salad',
+            'pasta'
+        ]]
+    }
