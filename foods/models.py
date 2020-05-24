@@ -62,4 +62,4 @@ class Food(db.Model):
         return json.dumps(self.simple_view)
 
     def get_calorie(self):
-        return self.int(Calories)
+        return self.Calories
