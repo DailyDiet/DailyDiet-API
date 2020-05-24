@@ -15,5 +15,4 @@ def sevade(list1, list2, list3, calorie):
     #             k -=1
     #     i +=1
     # return None
-    return list1[i].get_calorie(), type(list1[i].get_calorie()), list1[i].get_calorie() + list2[j].get_calorie() + list3[k].get_calorie(),
-    type(list1[i].get_calorie() + list2[j].get_calorie() + list3[k].get_calorie())
+    return list1[i].get_calorie(), type(list1[i].get_calorie())
