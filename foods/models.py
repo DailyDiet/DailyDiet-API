@@ -60,3 +60,6 @@ class Food(db.Model):
 
     def __str__(self):
         return json.dumps(self.simple_view)
+
+    def get_calorie(self):
+        return self.Calories
