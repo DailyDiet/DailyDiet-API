@@ -3,6 +3,8 @@ from flask import jsonify
 from foods.utils import get_foods_with_categories
 from foods.diet import sevade
 from .models import Food
+from flask_jwt_extended import (jwt_required)
+from utils.decorators import confirmed_only
 
 
 @foods.route('/sevade/<calorie>', methods=['GET'])
