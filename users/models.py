@@ -42,4 +42,10 @@ class User(db.Model):
 
 
 class UserModelView(ModelView):
-    pass
+    can_edit = True
+    column_display_pk = True
+    can_view_details = True
+    column_exclude_list = ['Password']
+    column_searchable_list = ['FullName', 'Email']
+    column_filters = ['Admin', 'RegisteredOn', 'Confirmed', 'ConfirmedOn']
+    edit_modal = False  # i don't know but i didn't work for true

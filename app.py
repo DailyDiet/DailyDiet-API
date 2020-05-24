@@ -5,7 +5,8 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from calculator import calculator
-from extentions import db, jwt, migrate, mail, admin
+from extentions import db, jwt, migrate, mail
+from admin import admin
 from users import users, models as user_models
 from foods import foods, models as food_models
 
@@ -43,10 +44,6 @@ def create_app(environment='Development'):
     jwt.init_app(app)
     mail.init_app(app)
     admin.init_app(app)
-
-    # adding models to admin
-    admin.add_view(user_models.UserModelView(user_models.User, db.session,endpoint='user_admin'))
-    admin.add_view(food_models.FoodModelView(food_models.Food, db.session,endpoint='food_admin'))
 
     # configuring CORS settings
     CORS(app, resources=app.config['CORS_RESOURCES'])
