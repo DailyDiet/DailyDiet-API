@@ -4,11 +4,11 @@ from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-
 from calculator import calculator
 from extentions import db, jwt, migrate, mail
-from users import users
-from foods import foods
+from admin import admin
+from users import users, models as user_models
+from foods import foods, models as food_models
 
 
 def create_app(environment='Development'):
@@ -23,12 +23,11 @@ def create_app(environment='Development'):
     app.config.from_object(f'config.{environment}Config')
 
     @app.route('/', methods=['GET'])
-    def temp_main_function() :
+    def temp_main_function():
         """
         temporary main function to test app, debug and testing status
         :return: status:dict
         """
-        raise BaseException(message='some exception')
         return {
             'status': 'API is up and running:))',
             'ENV': app.config['ENV'],
@@ -44,7 +43,9 @@ def create_app(environment='Development'):
     migrate.init_app(app)
     jwt.init_app(app)
     mail.init_app(app)
+    admin.init_app(app)
 
+    # configuring CORS settings
     CORS(app, resources=app.config['CORS_RESOURCES'])
 
     if app.debug:

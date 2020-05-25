@@ -26,6 +26,9 @@ class Config(object):
     # mail accounts
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
 
+    # admin settings
+    FLASK_ADMIN_SWATCH = 'Lumen' #check https://bootswatch.com/3/ to see different swatches
+
 
 class DevelopmentConfig(Config):
     FLASK_DEBUG = True

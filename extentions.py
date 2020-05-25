@@ -8,3 +8,5 @@ db = SQLAlchemy()
 migrate = Migrate(db=db)
 jwt = JWTManager()
 mail = Mail()
+
+
