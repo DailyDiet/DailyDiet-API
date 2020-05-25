@@ -40,6 +40,9 @@ class User(db.Model):
     def __repr__(self):
         return f'<Email {self.Email}>'
 
+    def get_calorie(self):
+        return self.Calories
+
 
 class UserModelView(ModelView):
     can_edit = True
