@@ -1,5 +1,16 @@
 import random
 
+
+def yevade(list1, calorie):
+    i = 0
+    rand = random.randint(1,10)
+    while i < len(list1):
+        if float(list1[i].get_calorie()) in range (calorie-rand, calorie+rand, 1):
+            return list1[i], float(list1[i].get_calorie())
+        i += 1
+
+    return None
+
 def sevade(list1, list2, list3, calorie):
     i = 0
     j = 0
@@ -13,6 +24,6 @@ def sevade(list1, list2, list3, calorie):
             elif float(list1[i].get_calorie()) + float(list2[j].get_calorie()) + float(list3[k].get_calorie()) < n-10:
                 j += 1
             else:
-                k -=1
-        i +=1
+                k -= 1
+        i += 1
     return None

@@ -1,13 +1,25 @@
 from foods import foods
 from flask import jsonify
 from foods.utils import get_foods_with_categories
-from foods.diet import sevade
+from foods.diet import sevade, yevade
 from .models import Food
 from flask_jwt_extended import (jwt_required)
 from utils.decorators import confirmed_only
 
+@foods.route('/yevade/<int:calorie>', methods=['GET'])
+def get_yevade(calorie):
+    cat = ['breakfast, ''mostly_meat', 'pasta', 'main_dish', 'sandwich']
+    dog = get_foods_with_categories(cat)
 
-@foods.route('/sevade/<calorie>', methods=['GET'])
+    catdog = yevade(dog, calorie)
+
+    if catdog is None:
+        return jsonify({'error': 'Not Found'}), 404
+    else:
+        return jsonify({'diet': [str(catdog[0]), catdog[1]]}), 200
+
+
+@foods.route('/sevade/<int:calorie>', methods=['GET'])
 def get_sevade(calorie):
     cats1 = ['breakfast']
     cats2 = ['mostly_meat', 'pasta', 'main_dish', 'sandwich']
