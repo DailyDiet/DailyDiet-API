@@ -1,6 +1,6 @@
 from os import getenv
 from werkzeug.debug import DebuggedApplication
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -26,6 +26,7 @@ def create_app(environment='Development'):
     def temp_main_function():
         """
         temporary main function to test app, debug and testing status
+        todo:move it to another endpoint
         :return: status:dict
         """
         return {
@@ -44,6 +45,16 @@ def create_app(environment='Development'):
     jwt.init_app(app)
     mail.init_app(app)
     admin.init_app(app)
+
+    @app.route('/admin/static/<path:path>')
+    def handle_admin_files(path):
+        """
+        temp function to load static files from admin/static folder
+        todo:move it to a general blueprint that doe'nt have prefix
+        :param path:
+        :return:
+        """
+        return send_from_directory('admin/static', path)
 
     # configuring CORS settings
     CORS(app, resources=app.config['CORS_RESOURCES'])
