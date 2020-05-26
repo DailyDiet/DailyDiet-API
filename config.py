@@ -27,7 +27,7 @@ class Config(object):
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
 
     # admin settings
-    FLASK_ADMIN_SWATCH = 'Lumen' #check https://bootswatch.com/3/ to see different swatches
+    # FLASK_ADMIN_SWATCH = 'Lumen' #check https://bootswatch.com/3/ to see different swatches
 
     #static file settings
     STATIC_FOLDERS = (
