@@ -9,7 +9,7 @@ from extentions import db, jwt, migrate, mail
 from admin import admin
 from users import users, models as user_models
 from foods import foods, models as food_models
-
+from whitenoise import WhiteNoise
 
 def create_app(environment='Development'):
     """
@@ -46,15 +46,6 @@ def create_app(environment='Development'):
     mail.init_app(app)
     admin.init_app(app)
 
-    @app.route('/admin/static/<path:path>')
-    def handle_admin_files(path):
-        """
-        temp function to load static files from admin/static folder
-        todo:move it to a general blueprint that doe'nt have prefix
-        :param path:
-        :return:
-        """
-        return send_from_directory('admin/static', path)
 
     # configuring CORS settings
     CORS(app, resources=app.config['CORS_RESOURCES'])
@@ -62,6 +53,7 @@ def create_app(environment='Development'):
     if app.debug:
         app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
 
+    app.wsgi_app = WhiteNoise(app.wsgi_app)
     return app
 
 
