@@ -53,3 +53,4 @@ class UserModelView(ModelView):
     column_filters = ['Admin', 'RegisteredOn', 'Confirmed', 'ConfirmedOn']
     edit_modal = False  # i don't know but i didn't work for true
     column_editable_list = ['Admin', 'Confirmed']
+    form_excluded_columns = ('FoodSet', )
