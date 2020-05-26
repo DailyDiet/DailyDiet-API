@@ -1,6 +1,5 @@
 import random
 
-
 def yevade(list1, calorie):
     i = 0
     rand = random.randint(1,10)
