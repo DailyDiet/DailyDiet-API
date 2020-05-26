@@ -11,6 +11,7 @@ from users import users, models as user_models
 from foods import foods, models as food_models
 from whitenoise import WhiteNoise
 
+
 def create_app(environment='Development'):
     """
     :param environment: is either Development/Production/Testing
@@ -46,14 +47,17 @@ def create_app(environment='Development'):
     mail.init_app(app)
     admin.init_app(app)
 
-
     # configuring CORS settings
     CORS(app, resources=app.config['CORS_RESOURCES'])
 
     if app.debug:
         app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
 
+    #enabling whitenoise
     app.wsgi_app = WhiteNoise(app.wsgi_app)
+    for static_folder in app.config.STATIC_FOLDERS:
+        app.wsgi_app.add_files(static_folder)
+
     return app
 
 
