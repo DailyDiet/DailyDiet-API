@@ -29,6 +29,12 @@ class Config(object):
     # admin settings
     FLASK_ADMIN_SWATCH = 'Lumen' #check https://bootswatch.com/3/ to see different swatches
 
+    #static file settings
+    STATIC_FOLDERS = (
+        'admin/static/',
+        'static/'
+    )
+
 
 class DevelopmentConfig(Config):
     FLASK_DEBUG = True
