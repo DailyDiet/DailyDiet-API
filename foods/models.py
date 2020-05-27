@@ -41,7 +41,7 @@ class Food(db.Model):
             return None
         else:
             payload = json.loads(self.Recipe)
-            payload['category'] = self.Category
+            payload['category'] = self.get_category()
             payload['date_created'] = self.CreatedAt.strftime('%Y-%m-%d %H:%M:%S')
             return payload
 
@@ -55,7 +55,7 @@ class Food(db.Model):
         """
         return {
             'id': self.id,
-            'category': self.Category,
+            'category': self.get_category(),
             'image': self.Image,
             'thumbnail': self.Thumbnail,
             'title': self.Title,
@@ -70,6 +70,9 @@ class Food(db.Model):
 
     def get_calorie(self):
         return self.Calories
+
+    def get_category(self):
+        return self.Category.strip().lower()
 
 
 # for admin integration
