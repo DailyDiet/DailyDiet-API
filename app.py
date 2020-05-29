@@ -1,6 +1,6 @@
 from os import getenv
 from werkzeug.debug import DebuggedApplication
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -9,6 +9,7 @@ from extentions import db, jwt, migrate, mail
 from admin import admin
 from users import users, models as user_models
 from foods import foods, models as food_models
+from whitenoise import WhiteNoise
 
 
 def create_app(environment='Development'):
@@ -26,6 +27,7 @@ def create_app(environment='Development'):
     def temp_main_function():
         """
         temporary main function to test app, debug and testing status
+        todo:move it to another endpoint
         :return: status:dict
         """
         return {
@@ -50,6 +52,11 @@ def create_app(environment='Development'):
 
     if app.debug:
         app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
+
+    #enabling whitenoise
+    app.wsgi_app = WhiteNoise(app.wsgi_app)
+    for static_folder in app.config.STATIC_FOLDERS:
+        app.wsgi_app.add_files(static_folder)
 
     return app
 
