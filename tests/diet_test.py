@@ -2,8 +2,8 @@ import unittest
 import requests
 import json
 
-# ip = 'https://dailydiet-api.herokuapp.com/'
-ip = 'http://127.0.0.1:5000'
+ip = 'https://dailydiet-api.herokuapp.com/'
+# ip = 'http://127.0.0.1:5000'
 class TestDiet(unittest.TestCase):
 
     def test_sevade(self):
