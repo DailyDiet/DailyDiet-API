@@ -28,12 +28,14 @@ class Config(object):
 
     # admin settings
 
-
-    #static file settings
+    # static file settings
     STATIC_FOLDERS = (
         'admin/static/',
         'static/'
     )
+
+    # elasticsearch settings
+    ELASTICSEARCH_URL = os.getenv('ELASTICSEARCH_URL')
 
 
 class DevelopmentConfig(Config):

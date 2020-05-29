@@ -6,3 +6,4 @@ felan.txt
 __pycache__
 .DS_Store
 DATABASE_CREDENTIALS.txt
+create_elastic_index.ipynb

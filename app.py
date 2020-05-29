@@ -5,7 +5,7 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from calculator import calculator
-from extentions import db, jwt, migrate, mail
+from extentions import db, jwt, migrate, mail, elastic
 from admin import admin
 from users import users, models as user_models
 from foods import foods, models as food_models
@@ -34,7 +34,8 @@ def create_app(environment='Development'):
             'status': 'API is up and running:))',
             'ENV': app.config['ENV'],
             'DEBUG': app.config['DEBUG'],
-            'TESTING': app.config['TESTING']
+            'TESTING': app.config['TESTING'],
+            'elasticsearch_status': 'ready' if elastic.ping() else 'broken'
         }
 
     app.register_blueprint(calculator)
@@ -53,7 +54,7 @@ def create_app(environment='Development'):
     if app.debug:
         app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
 
-    #enabling whitenoise
+    # enabling whitenoise
     app.wsgi_app = WhiteNoise(app.wsgi_app)
     for static_folder in app.config['STATIC_FOLDERS']:
         app.wsgi_app.add_files(static_folder)
