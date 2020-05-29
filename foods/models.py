@@ -4,12 +4,86 @@ from sqlalchemy import Column, Integer, REAL, CHAR, VARCHAR, TIMESTAMP, TEXT, Fo
 import json
 from flask_admin.contrib.sqla import ModelView
 from flask import jsonify
-from extentions import db
+from extentions import db, elastic
 from wtforms import SelectField
 
 
-class Food(db.Model):
+class SearchableMixin(object):
+
+    @classmethod
+    def add_to_index(cls, instance):
+        if elastic is None:
+            return
+        if not hasattr(instance, 'elastic_document'):
+            raise Exception("model doesn't have 'elastic_document' attribute")
+
+        payload = instance.elastic_document
+        if not hasattr(cls, '__indexname__'):
+            raise Exception("class doesn't have '__indexname__' attribute")
+
+        elastic.index(index=cls.__indexname__, body=payload, id=instance.id)
+
+    @classmethod
+    def remove_from_index(cls, instance):
+        if elastic is None:
+            return
+        if not hasattr(cls, '__indexname__'):
+            raise Exception("class doesn't have '__indexname__' attribute")
+
+        elastic.delete(index=cls.__indexname__, id=instance.id)
+
+    @classmethod
+    def query_index(cls, query, page=1, per_page=10):
+        if elastic is None:
+            return [], 0
+        search = elastic.search(
+            index=cls.__indexname__,
+            body={'query': {'multi_match': {'query': query, 'fields': ['*']}},
+                  'from': (page - 1) * per_page, 'size': per_page})
+        ids = [int(hit['_id']) for hit in search['hits']['hits']]
+        return ids, search['hits']['total']['value']
+
+    @classmethod
+    def search(cls, expression, page=1, per_page=10):
+        ids, total = cls.query_index(expression, page, per_page)
+        if total == 0:
+            return cls.query.filter_by(id=0), 0  # just returning nothing
+        when = []
+        for i in range(len(ids)):
+            when.append((ids[i], i))
+        return cls.query.filter(cls.id.in_(ids)).order_by(
+            db.case(when, value=cls.id)), total
+
+    @classmethod
+    def before_commit(cls, session):
+        session._changes = {
+            'add': list(session.new),
+            'update': list(session.dirty),
+            'delete': list(session.deleted)
+        }
+
+    @classmethod
+    def after_commit(cls, session):
+        for obj in session._changes['add']:
+            if isinstance(obj, SearchableMixin):
+                cls.add_to_index(obj)
+        for obj in session._changes['update']:
+            if isinstance(obj, SearchableMixin):
+                cls.add_to_index(obj)
+        for obj in session._changes['delete']:
+            if isinstance(obj, SearchableMixin):
+                cls.remove_from_index(obj)
+        session._changes = None
+
+    @classmethod
+    def reindex(cls):
+        for obj in cls.query:
+            cls.add_to_index(obj)
+
+
+class Food(db.Model,SearchableMixin):
     __tablename__ = 'foods'
+    __indexname__ = 'foods'
 
     id = Column('id', Integer(), primary_key=True)
     Calories = Column('calories', Integer())
@@ -36,7 +110,7 @@ class Food(db.Model):
     #     self._Category = category
 
     @property
-    def recipe(self):
+    def recipe(self) -> dict:
         if self.Recipe is None or self.Recipe == '':
             return None
         else:
@@ -49,7 +123,7 @@ class Food(db.Model):
         return f"<Food '{self.Title}'>"
 
     @property
-    def simple_view(self):
+    def simple_view(self) -> dict:
         """
                a simple view of food model
         """
@@ -68,11 +142,29 @@ class Food(db.Model):
     def __str__(self):
         return json.dumps(self.simple_view)
 
-    def get_calorie(self):
+    def get_calorie(self) -> int:
         return self.Calories
 
-    def get_category(self):
+    def get_category(self) -> str:
         return self.Category.strip().lower()
+
+    @property
+    def elastic_document(self):
+        """
+        :return: elastic search index document
+        """
+        recipe = self.recipe
+        payload = {
+            'author': self.author.FullName,
+            'name': recipe['food_name'],
+            'description': recipe['description'],
+            'category': recipe['category'],
+            'tag_cloud': recipe['tag_cloud'],
+            'ingredients': [ingredient['food']['food_name'] for ingredient in recipe['ingredients']],
+            'directions': [direction['text'] for direction in recipe['directions']]
+        }
+
+        return payload
 
 
 # for admin integration
@@ -99,3 +191,7 @@ class FoodModelView(ModelView):
             'pasta'
         ]]
     }
+
+
+db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
+db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)

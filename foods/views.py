@@ -1,10 +1,11 @@
 from foods import foods
-from flask import jsonify
+from flask import jsonify, request
 from foods.utils import get_foods_with_categories
 from foods.diet import sevade, yevade, dovade
 from .models import Food
 from flask_jwt_extended import (jwt_required)
 from utils.decorators import confirmed_only
+
 
 @foods.route('/yevade/<int:calorie>', methods=['GET'])
 def get_yevade(calorie):
@@ -73,3 +74,35 @@ def get_food(id):
         return jsonify({"error": "food not found."}), 404
 
     return jsonify(food.simple_view)
+
+
+@foods.route('/search', methods=['GET'])
+def food_search():
+    """
+    food full text search using elasticsearch
+    http parameters:
+        query: text to search
+        page: pagination page number
+        per_page: pagination per_page count
+    :return:
+    """
+    query = request.args.get('query')
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 10))
+
+    if query == "" or query is None:
+        return jsonify({
+            'error': "query should exist in the request"
+        }), 422  # invalid input error
+
+    if per_page > 50:
+        return jsonify({
+            'error': 'per_page should not be more than 50'
+        }), 422
+
+    results, count = Food.search(query, page, per_page)
+
+    return jsonify({
+        'results': [result.simple_view for result in results.all()],
+        'total_results_count': count
+    })
