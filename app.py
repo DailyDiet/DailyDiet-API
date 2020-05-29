@@ -53,10 +53,10 @@ def create_app(environment='Development'):
     if app.debug:
         app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
 
-    #enabling whitenoise
-    app.wsgi_app = WhiteNoise(app.wsgi_app)
-    for static_folder in app.config.STATIC_FOLDERS:
-        app.wsgi_app.add_files(static_folder)
+    # #enabling whitenoise
+    # app.wsgi_app = WhiteNoise(app.wsgi_app)
+    # for static_folder in app.config.STATIC_FOLDERS:
+    #     app.wsgi_app.add_files(static_folder)
 
     return app
 
