@@ -880,7 +880,7 @@ response code will be **422**
 
 2- if per_page value is more than 50 
 
-response code will be **404**
+response code will be **422**
 
 ```json
 {
