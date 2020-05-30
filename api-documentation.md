@@ -868,7 +868,9 @@ response code will be **200**
 
 *in case of errors*:
 
-1- if you don't pass query parameter in the url **422**
+1- if you don't pass query parameter in the url
+ 
+response code will be **422**
 
 ```json
 {
@@ -876,7 +878,9 @@ response code will be **200**
 }
 ```
 
-2- if per_page value is more than 50 **404**
+2- if per_page value is more than 50 
+
+response code will be **404**
 
 ```json
 {
