@@ -25,9 +25,9 @@ def set_placeholder(recipe):
             recipe['primary_thumbnail'] = Config.PLACEHOLDERS['thumbnail'][category]
     else:
         # its a small view dict
-        if recipe['primary_image'] is None:
-            recipe['primary_image'] = Config.PLACEHOLDERS['image'][category]
-            recipe['primary_thumbnail'] = Config.PLACEHOLDERS['thumbnail'][category]
+        if recipe['image'] is None:
+            recipe['image'] = Config.PLACEHOLDERS['image'][category]
+            recipe['thumbnail'] = Config.PLACEHOLDERS['thumbnail'][category]
 
     return recipe
 

@@ -119,6 +119,6 @@ def food_search():
     results, count = Food.search(query, page, per_page)
 
     return jsonify({
-        'results': [result.simple_view for result in results.all()],
+        'results': [set_placeholder(result.simple_view) for result in results.all()],
         'total_results_count': count
     })
