@@ -37,6 +37,35 @@ class Config(object):
     # elasticsearch settings
     ELASTICSEARCH_URL = os.getenv('ELASTICSEARCH_URL')
 
+    PLACEHOLDERS = {
+        "image": {
+            "mostly_meat": "https://img.icons8.com/color/7x/steak.png",
+            "appetizers": "https://img.icons8.com/color/7x/nachos.png",
+            "drink": "https://img.icons8.com/color/7x/rice-vinegar.png",
+            "main_dish": "https://img.icons8.com/color/7x/real-food-for-meals.png",
+            "sandwich": "https://img.icons8.com/color/7x/sandwich.png",
+            "dessert": "https://img.icons8.com/color/7x/dessert.png",
+            "breakfast": "https://img.icons8.com/color/7x/breakfast.png",
+            "protein_shake": "https://img.icons8.com/color/7x/protein.png",
+            "salad": "https://img.icons8.com/color/7x/salad.png",
+            "pasta": "https://img.icons8.com/color/7x/spaghetti.png",
+            "other": "https://img.icons8.com/color/7x/cookbook.png"
+        },
+        "thumbnail": {
+            "mostly_meat": "https://img.icons8.com/color/2x/steak.png",
+            "appetizers": "https://img.icons8.com/color/2x/nachos.png",
+            "drink": "https://img.icons8.com/color/2x/rice-vinegar.png",
+            "main_dish": "https://img.icons8.com/color/2x/real-food-for-meals.png",
+            "sandwich": "https://img.icons8.com/color/2x/sandwich.png",
+            "dessert": "https://img.icons8.com/color/2x/dessert.png",
+            "breakfast": "https://img.icons8.com/color/2x/breakfast.png",
+            "protein_shake": "https://img.icons8.com/color/2x/protein.png",
+            "salad": "https://img.icons8.com/color/2x/salad.png",
+            "pasta": "https://img.icons8.com/color/2x/spaghetti.png",
+            "other": "https://img.icons8.com/color/2x/cookbook.png"
+        }
+    }
+
 
 class DevelopmentConfig(Config):
     FLASK_DEBUG = True

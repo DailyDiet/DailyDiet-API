@@ -543,6 +543,8 @@ response code will be **200**
 
 - The server successfully processed the request and it's returning the recipe in this format.
 
+- image id is **0** if image is a placeholder 
+
 ```json
 {
   "author_id": 1,

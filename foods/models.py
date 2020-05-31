@@ -4,6 +4,7 @@ from sqlalchemy import Column, Integer, REAL, CHAR, VARCHAR, TIMESTAMP, TEXT, Fo
 import json
 from flask_admin.contrib.sqla import ModelView
 from flask import jsonify
+from config import Config
 from extentions import db, elastic
 from wtforms import SelectField
 
@@ -81,7 +82,7 @@ class SearchableMixin(object):
             cls.add_to_index(obj)
 
 
-class Food(db.Model,SearchableMixin):
+class Food(db.Model, SearchableMixin):
     __tablename__ = 'foods'
     __indexname__ = 'foods'
 
@@ -117,6 +118,12 @@ class Food(db.Model,SearchableMixin):
             payload = json.loads(self.Recipe)
             payload['category'] = self.get_category()
             payload['date_created'] = self.CreatedAt.strftime('%Y-%m-%d %H:%M:%S')
+
+            # fixing image loss
+            if len(payload['images']) != 0 and payload['primary_image'] is None:
+                payload['primary_image'] = payload['images'][0]['image']
+                payload['primary_thumbnail'] = payload['images'][0]['thumbnail']
+
             return payload
 
     def __repr__(self):
@@ -127,7 +134,7 @@ class Food(db.Model,SearchableMixin):
         """
                a simple view of food model
         """
-        return {
+        payload = {
             'id': self.id,
             'category': self.get_category(),
             'image': self.Image,
@@ -138,6 +145,12 @@ class Food(db.Model,SearchableMixin):
                           'fiber': self.Fiber,
                           'protein': self.Protein}
         }
+        if payload['image'] is None:
+            recipe = self.recipe
+            payload['image'] = recipe['primary_image']
+            payload['thumbnail'] = recipe['primary_thumbnail']
+
+        return payload
 
     def __str__(self):
         return json.dumps(self.simple_view)

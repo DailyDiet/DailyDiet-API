@@ -1,6 +1,6 @@
 from foods import foods
 from flask import jsonify, request
-from foods.utils import get_foods_with_categories
+from foods.utils import get_foods_with_categories, set_placeholder, beautify_category
 from foods.diet import sevade, yevade, dovade
 from .models import Food
 from flask_jwt_extended import (jwt_required)
@@ -62,6 +62,7 @@ def get_sevade(calorie):
     else:
         return jsonify({'error': 'I\'m a teapot'}), 418
 
+
 @foods.route('/recipe/<int:id>', methods=['GET'])
 def get_recipe(id):
     food = Food.query.get(id)
@@ -72,6 +73,10 @@ def get_recipe(id):
     if recipe is None:
         return jsonify({"error": "recipe not found."}), 404
 
+    if recipe['primary_image'] is None:
+        recipe = set_placeholder(recipe)
+
+    recipe['category'] = beautify_category(recipe['category'])
     return jsonify(recipe)
 
 
@@ -81,7 +86,10 @@ def get_food(id):
     if food is None:
         return jsonify({"error": "food not found."}), 404
 
-    return jsonify(food.simple_view)
+    payload = food.simple_view
+    if payload['image'] is None:
+        payload = set_placeholder(payload)
+    return jsonify(payload)
 
 
 @foods.route('/search', methods=['GET'])
