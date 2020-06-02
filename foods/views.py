@@ -18,7 +18,7 @@ def get_yevade(calorie):
         if catdog is None:
             return jsonify({'error': 'Not Found'}), 404
         else:
-            return jsonify({'diet': [str(catdog[0]), catdog[1]]}), 200
+            return jsonify({'diet': [catdog[0].simple_view, catdog[1]]}), 200
     else:
         return jsonify({'error': 'I\'m a teapot'}), 418
 
@@ -37,7 +37,7 @@ def get_dovade(calorie):
         if catdog is None:
             return jsonify({'error': 'Not Found'}), 404
         else:
-            return jsonify({'diet': [str(catdog[0]), str(catdog[1]), str(catdog[2])]}), 200
+            return jsonify({'diet': [catdog[0].simple_view, catdog[1].simple_view, catdog[2]]}), 200
     else:
         return jsonify({'error': 'I\'m a teapot'}), 418
 
@@ -58,7 +58,8 @@ def get_sevade(calorie):
         if catdog is None:
             return jsonify({'error': 'Not Found'}), 404
         else:
-            return jsonify({'diet': [str(catdog[0]), str(catdog[1]), str(catdog[2]), catdog[3]]}), 200
+            return jsonify(
+                {'diet': [catdog[0].simple_view, catdog[1].simple_view, catdog[2].simple_view, catdog[3]]}), 200
     else:
         return jsonify({'error': 'I\'m a teapot'}), 418
 
