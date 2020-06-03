@@ -8,7 +8,7 @@ from .forms import PostForm
 from .models import Post
 
 
-@blog.route('/', methods=['GET'])
+@blog.route('/posts/', methods=['GET'])
 def list_posts():
     posts = Post.query.order_by(Post.id.desc()).all()
     result = dict()
@@ -20,7 +20,7 @@ def list_posts():
     return jsonify(result), 200
 
 
-@blog.route('/<string:slug>', methods=['GET'])
+@blog.route('/posts/<string:slug>', methods=['GET'])
 def single_post(slug):
     post = Post.query.filter(Post.slug == slug).first()
     result = {'slug': post.slug, 'title' : post.title, 'summary': post.summary, 'content': post.content, 'category': post.category}
@@ -41,3 +41,11 @@ def create_post():
     db.session.add(new_post)
     db.session.commit()
     return {'msg': 'Post created successfully'}, 201
+
+
+@blog.route('/delete/<int:post_id>', methods=['DELETE'])
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    db.session.delete(post)
+    db.session.commit()
+    return {}, 204
