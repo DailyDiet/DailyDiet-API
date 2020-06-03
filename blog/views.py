@@ -1,12 +1,16 @@
 from flask import jsonify
+from sqlalchemy.exc import IntegrityError
+
+from extentions import db
 
 from . import blog
+from .forms import PostForm
 from .models import Post
 
 
 @blog.route('/', methods=['GET'])
-def posts():
-    posts = Post.query.all()
+def list_posts():
+    posts = Post.query.order_by(Post.id.desc()).all()
     result = dict()
     for p in posts:
         tmp = dict()
@@ -16,8 +20,24 @@ def posts():
     return jsonify(result), 200
 
 
-@blog.route('/<string:slug>')
+@blog.route('/<string:slug>', methods=['GET'])
 def single_post(slug):
     post = Post.query.filter(Post.slug == slug).first()
     result = {'slug': post.slug, 'title' : post.title, 'summary': post.summary, 'content': post.content, 'category': post.category}
     return jsonify(result), 200
+
+
+@blog.route('/create_post', methods=['POST'])
+def create_post():
+    form = PostForm()
+    if not form.validate_on_submit():
+        return {'error': form.errors}, 400
+    new_post = Post()
+    new_post.title = form.title.data
+    new_post.content = form.content.data
+    new_post.slug = form.slug.data
+    new_post.summary = form.summary.data
+    new_post.category = form.category.data
+    db.session.add(new_post)
+    db.session.commit()
+    return {'msg': 'Post created successfully'}, 201
