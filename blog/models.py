@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, Table, ForeignKey
-from app import db
+from extentions import db
 
 
 posts_categories = Table('posts_categories', db.metadata,
