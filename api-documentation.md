@@ -485,7 +485,7 @@ response code will be **204**
 
 ### `/users/get_user
 
-method: `PATCH`
+method: `GET`
 
 *input*:
 Authorization Header:
