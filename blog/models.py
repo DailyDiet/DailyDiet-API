@@ -11,3 +11,4 @@ class Post(db.Model):
     content = Column(Text, nullable=False, unique=False)
     slug = Column(String(128), nullable=False, unique=True)
     category = Column(String(256), nullable=True, unique=False)
+    author = Column(Integer, db.ForeignKey('users.id'), nullable=False)

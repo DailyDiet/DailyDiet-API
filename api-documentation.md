@@ -243,13 +243,15 @@ method: `POST`
 
 response code will be **200**
 
+- is_active
 - access_token
 - refresh_token
 
 ```json
 {
-  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODc5ODI1OTgsIm5iZiI6MTU4Nzk4MjU5OCwianRpIjoiZGRjOTJmMjMtMGUwZS00ZGYxLWIzMTgtYjdiM2NlNmYyZTMyIiwiZXhwIjoxNTg3OTgzNDk4LCJpZGVudGl0eSI6Im1vaGFtbWFkaG9zc2Vpbi5tYWxla3BvdXJAZ21haWwuY29tIiwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MifQ.MQey2So6HvQyO6HH9yWJjbb0-EgoUPVvFofo8B0mhPw",
-  "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODc5ODI1OTgsIm5iZiI6MTU4Nzk4MjU5OCwianRpIjoiMjA0NTYwNjktZDMwZi00NjM5LWJkZTktYThkMWNjYmIzN2I4IiwiZXhwIjoxNTkwNTc0NTk4LCJpZGVudGl0eSI6Im1vaGFtbWFkaG9zc2Vpbi5tYWxla3BvdXJAZ21haWwuY29tIiwidHlwZSI6InJlZnJlc2gifQ.IdMv78GnD4vUH6BlgdzPYPFw_04Hz7M150LqRv4drXc"
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTEzODEwOTYsIm5iZiI6MTU5MTM4MTA5NiwianRpIjoiYWViMjY5MDktYzUxZS00NTM0LTk0NWEtMzZkYzEwZjNiMjdhIiwiZXhwIjoxNTkxMzgxOTk2LCJpZGVudGl0eSI6Im1vaGFtbWFkaG9zc2Vpbi5tYWxla3BvdXJAZ21haWwuY29tIiwiZnJlc2giOnRydWUsInR5cGUiOiJhY2Nlc3MifQ.8iSlZyW2pQN-OzDiSUe7LKbgX6iS6CNOsPMUGZfhf-s",
+  "is_active": true,
+  "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTEzODEwOTYsIm5iZiI6MTU5MTM4MTA5NiwianRpIjoiMDA5N2E1M2ItYWI4Yi00YzAwLTkxZjUtZTgwNmNkNWFjNTRmIiwiZXhwIjoxNTkzOTczMDk2LCJpZGVudGl0eSI6Im1vaGFtbWFkaG9zc2Vpbi5tYWxla3BvdXJAZ21haWwuY29tIiwidHlwZSI6InJlZnJlc2gifQ.TpuHN33fO66LWVZktvYr10VGoDWwONJkPaC6WgywgQM"
 }
 ```
 
@@ -759,7 +761,6 @@ response code will be **200**
 ```
 
 ----------
-----------
 
 ### `/foods/search`
 
@@ -795,75 +796,76 @@ response code will be **200**
 ```
 
 *sample input*
+
 ```json
 {
   "results": [
     {
-      "category": "pasta", 
-      "id": 384279, 
+      "category": "pasta",
+      "id": 384279,
       "image": "https://images.eatthismuch.com/site_media/img/384279_erin_m_77a48297-f148-454d-aa02-fdd277e70edf.png", 
       "nutrition": {
-        "calories": 476, 
-        "fat": 8.6, 
-        "fiber": 1.6, 
+        "calories": 476,
+        "fat": 8.6,
+        "fiber": 1.6,
         "protein": 17.7
-      }, 
+      },
       "thumbnail": "https://images.eatthismuch.com/site_media/thmb/384279_erin_m_77a48297-f148-454d-aa02-fdd277e70edf.png", 
       "title": "Pasta, Corn & Artichoke Bowl"
-    }, 
+    },
     {
-      "category": "pasta", 
-      "id": 1493432, 
+      "category": "pasta",
+      "id": 1493432,
       "image": "https://images.eatthismuch.com/site_media/img/1093241_Billie7_1975_f6db1d3f-2bed-4c82-bf10-e343b9dc8314.jpeg", 
       "nutrition": {
-        "calories": 591, 
-        "fat": 15.8, 
-        "fiber": 4.7, 
+        "calories": 591,
+        "fat": 15.8,
+        "fiber": 4.7,
         "protein": 16.7
-      }, 
+      },
       "thumbnail": "https://images.eatthismuch.com/site_media/thmb/1093241_Billie7_1975_f6db1d3f-2bed-4c82-bf10-e343b9dc8314.jpeg", 
       "title": "Spaghetti with Mushrooms, Garlic and Oil"
-    }, 
+    },
     {
-      "category": "other", 
-      "id": 907167, 
+      "category": "other",
+      "id": 907167,
       "image": "https://images.eatthismuch.com/site_media/img/907167_tabitharwheeler_915ad93b-213d-4b3d-bcc2-e0570b833af3.jpg", 
       "nutrition": {
-        "calories": 309, 
-        "fat": 7.2, 
-        "fiber": 8.6, 
+        "calories": 309,
+        "fat": 7.2,
+        "fiber": 8.6,
         "protein": 16.1
-      }, 
+      },
       "thumbnail": "https://images.eatthismuch.com/site_media/thmb/907167_tabitharwheeler_915ad93b-213d-4b3d-bcc2-e0570b833af3.jpg", 
       "title": "Pasta with Red Sauce and Mozzarella"
-    }, 
+    },
     {
-      "category": "pasta", 
-      "id": 905979, 
+      "category": "pasta",
+      "id": 905979,
       "image": "https://images.eatthismuch.com/site_media/img/905979_tabitharwheeler_82334d46-99b8-428d-aa16-4bdd9c3008cd.jpg", 
       "nutrition": {
-        "calories": 423, 
-        "fat": 12.3, 
-        "fiber": 4.0, 
+        "calories": 423,
+        "fat": 12.3,
+        "fiber": 4.0,
         "protein": 24.2
-      }, 
+      },
       "thumbnail": "https://images.eatthismuch.com/site_media/thmb/905979_tabitharwheeler_82334d46-99b8-428d-aa16-4bdd9c3008cd.jpg", 
       "title": "Spaghetti with Meat Sauce"
-    }, 
+    },
     {
-      "category": "pasta", 
-      "id": 45500, 
+      "category": "pasta",
+      "id": 45500,
       "image": "https://images.eatthismuch.com/site_media/img/45500_simmyras_43adc56f-d597-4778-a682-4ddfa9f394a3.png", 
       "nutrition": {
-        "calories": 285, 
-        "fat": 18.0, 
-        "fiber": 0.9, 
+        "calories": 285,
+        "fat": 18.0,
+        "fiber": 0.9,
         "protein": 15.4
-      }, 
+      },
       "thumbnail": "https://images.eatthismuch.com/site_media/thmb/45500_simmyras_43adc56f-d597-4778-a682-4ddfa9f394a3.png", 
       "title": "Rigatoni with Brie, Grape Tomatoes, Olives, and Basil"
     }
-  ], 
+  ],
   "total_results_count": 1211
 }
 ```
@@ -871,7 +873,7 @@ response code will be **200**
 *in case of errors*:
 
 1- if you don't pass query parameter in the url
- 
+
 response code will be **422**
 
 ```json
@@ -880,7 +882,7 @@ response code will be **422**
 }
 ```
 
-2- if per_page value is more than 50 
+2- if per_page value is more than 50
 
 response code will be **422**
 
@@ -890,5 +892,37 @@ response code will be **422**
 }
 ```
 
+----------
 
+### `/blog/`
 
+method: `GET`
+
+*input*: **NONE**
+
+*output*:
+
+response code will be **200**
+
+- return all posts
+
+```json
+{
+  "1": {
+    "category": null,
+    "content": "I don't know :)\r\ncheck flask doc!",
+    "slug": "how-to-use-flask",
+    "summary": "",
+    "title": "How To Use Flask?"
+  },
+  "2": {
+    "category": "recepie",
+    "content": "who konws!",
+    "slug": "avalin-post-dailydiet",
+    "summary": "pooof",
+    "title": "How To Get Diet?"
+  }
+}
+```
+
+----------
