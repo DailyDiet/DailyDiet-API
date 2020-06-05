@@ -1,15 +1,20 @@
 from os import getenv
-from werkzeug.debug import DebuggedApplication
+
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from calculator import calculator
-from extentions import db, jwt, migrate, mail, elastic
-from admin import admin
-from users import users, models as user_models
-from foods import foods, models as food_models
+from werkzeug.debug import DebuggedApplication
 from whitenoise import WhiteNoise
+
+from admin import admin
+from blog import blog
+from calculator import calculator
+from extentions import db, elastic, jwt, mail, migrate
+from foods import foods
+from foods import models as food_models
+from users import models as user_models
+from users import users
 
 
 def create_app(environment='Development'):
@@ -41,6 +46,7 @@ def create_app(environment='Development'):
     app.register_blueprint(calculator)
     app.register_blueprint(users)
     app.register_blueprint(foods)
+    app.register_blueprint(blog)
 
     db.init_app(app)
     migrate.init_app(app)
