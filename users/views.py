@@ -61,9 +61,10 @@ def login():
         return {'error': 'Email or Password does not match.'}, 403
     if not user.check_password(password):
         return {'error': 'Email or Password does not match.'}, 403
+    isActive = user.Confirmed
     access_token = create_access_token(identity=user.Email, fresh=True)
     refresh_token = create_refresh_token(identity=user.Email)
-    return {'access_token': access_token, 'refresh_token': refresh_token}, 200
+    return {'is_active': isActive, 'access_token': access_token, 'refresh_token': refresh_token}, 200
 
 
 @users.route('/auth', methods=['PUT'])
