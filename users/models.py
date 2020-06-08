@@ -6,7 +6,6 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from extentions import db
 
 from flask_admin.contrib.sqla import ModelView
-from blog.models import Post
 
 
 class User(db.Model):
@@ -21,7 +20,6 @@ class User(db.Model):
     Confirmed = Column(Boolean(), nullable=False, default=False)  # Confirmed Email Address Or Not
     ConfirmedOn = Column(DateTime(), nullable=True)
     FoodSet = db.relationship('Food', backref='author', lazy=True)
-    PostSet = db.relationship('Post', backref='pauthor', lazy=True)
 
     def __init__(self, full_name, email, password, admin=False,
                  registerd_on=None, confirmed=False, confirmed_on=None):
