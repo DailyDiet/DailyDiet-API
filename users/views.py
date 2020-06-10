@@ -11,7 +11,6 @@ from users.email import send_email
 from users.forms import ChangePasswordForm, LoginForm, RegisterForm
 from users.models import User
 from users.token import confirm_token, generate_confirmation_token
-from utils.decorators import confirmed_only, json_only
 
 
 @users.route('/signup', methods=['POST'])
