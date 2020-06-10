@@ -4,7 +4,7 @@ from sqlalchemy import Boolean, Column, DateTime, Integer, String, REAL, CHAR, V
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from extentions import db
-
+from blog.models import Post
 from flask_admin.contrib.sqla import ModelView
 
 
@@ -20,6 +20,7 @@ class User(db.Model):
     Confirmed = Column(Boolean(), nullable=False, default=False)  # Confirmed Email Address Or Not
     ConfirmedOn = Column(DateTime(), nullable=True)
     FoodSet = db.relationship('Food', backref='author', lazy=True)
+    PostSet = db.relationship('Post', backref='writer', lazy=True)
 
     def __init__(self, full_name, email, password, admin=False,
                  registerd_on=None, confirmed=False, confirmed_on=None):

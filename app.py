@@ -44,9 +44,10 @@ def create_app(environment='Development'):
         }
 
     app.register_blueprint(calculator)
+    app.register_blueprint(blog)
     app.register_blueprint(users)
     app.register_blueprint(foods)
-    app.register_blueprint(blog)
+
 
     db.init_app(app)
     migrate.init_app(app)

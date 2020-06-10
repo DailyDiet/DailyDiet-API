@@ -11,4 +11,4 @@ class Post(db.Model):
     content = Column(Text, nullable=False, unique=False)
     slug = Column(String(128), nullable=False, unique=True)
     category = Column(String(256), nullable=True, unique=False)
-    authorId = Column('author', Integer(), ForeignKey('users.id'), nullable=False)
+    authorId = Column('authorid', Integer(), ForeignKey('users.id'), nullable=False)
