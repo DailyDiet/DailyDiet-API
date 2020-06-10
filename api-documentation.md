@@ -909,16 +909,20 @@ response code will be **200**
 ```json
 {
   "1": {
-    "category": null,
-    "content": "I don't know :)\r\ncheck flask doc!",
-    "slug": "how-to-use-flask",
-    "summary": "",
-    "title": "How To Use Flask?"
+    "author_email": "yasi_ommi@yahoo.com",
+    "author_fullname": "Ken Adams",
+    "category": "category",
+    "content": "post content",
+    "slug": "some-slug",
+    "summary": "post summery",
+    "title": "sample post"
   },
   "2": {
+    "author_email": "mohammadhossein.malekpour@gmail.com",
+    "author_fullname": "Mohammad Hossein Malekpour",
     "category": "recepie",
     "content": "who konws!",
-    "slug": "avalin-post-dailydiet",
+    "slug": "avaliwern-post-dailywrdiet",
     "summary": "pooof",
     "title": "How To Get Diet?"
   }
@@ -939,16 +943,16 @@ pass query parametr in URL
 
 response code will be **200**
 
-- return all posts
-
 ```json
 {
+  "author_email": "mohammadhossein.malekpour@gmail.com",
+  "author_fullname": "Mohammad Hossein Malekpour",
   "category": "recepie",
   "content": "who konws!",
-  "post_id": 4,
-  "slug": "dovomi-post-daasdilywrdiet",
+  "post_id": 2,
+  "slug": "avaliwern-post-dailywrdiet",
   "summary": "pooof",
-  "title": "How Toqwewdasde Get Diet?"
+  "title": "How To Get Diet?"
 }
 ```
 

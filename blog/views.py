@@ -18,7 +18,8 @@ def list_posts():
         tmp = dict()
         tmp['id'] = p.id
         slug = p.slug.replace(' ', '-')
-        tmp = {'slug': slug, 'title': p.title, 'summary': p.summary, 'content': p.content, 'category': p.category}
+        print(p.writer.FullName)
+        tmp = {'slug': slug, 'title': p.title, 'summary': p.summary, 'content': p.content, 'category': p.category, 'author_fullname': p.writer.FullName, 'author_email': p.writer.Email}
         result.update({f'{p.id}': tmp})
     return jsonify(result), 200
 
@@ -28,8 +29,7 @@ def single_post(slug):
     post = Post.query.filter(Post.slug == slug).first()
     if not post:
         return {'error': 'post not exist!'}, 404
-    result = {'post_id':post.id, 'slug': post.slug, 'title': post.title, 'summary': post.summary, 'content': post.content,
-              'category': post.category}
+    result = {'post_id':post.id, 'slug': post.slug, 'title': post.title, 'summary': post.summary, 'content': post.content, 'category': post.category, 'author_fullname': post.writer.FullName, 'author_email': post.writer.Email}
     return jsonify(result), 200
 
 
