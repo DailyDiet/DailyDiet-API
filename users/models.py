@@ -4,7 +4,6 @@ from sqlalchemy import Boolean, Column, DateTime, Integer, String, REAL, CHAR, V
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from extentions import db
-from blog.models import Post
 from flask_admin.contrib.sqla import ModelView
 
 

@@ -7,14 +7,15 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.debug import DebuggedApplication
 from whitenoise import WhiteNoise
 
-from admin import admin
-from blog import blog
 from calculator import calculator
 from extentions import db, elastic, jwt, mail, migrate
 from foods import foods
-from foods import models as food_models
 from users import models as user_models
+from foods import models as food_models
+from blog import models as blog_models
 from users import users
+from blog import blog
+from admin import admin
 
 
 def create_app(environment='Development'):
@@ -44,9 +45,9 @@ def create_app(environment='Development'):
         }
 
     app.register_blueprint(calculator)
-    app.register_blueprint(blog)
     app.register_blueprint(users)
     app.register_blueprint(foods)
+    app.register_blueprint(blog)
 
 
     db.init_app(app)
