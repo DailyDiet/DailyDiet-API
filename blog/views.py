@@ -1,4 +1,5 @@
 from flask import jsonify
+from flask_jwt_extended import jwt_required
 from sqlalchemy.exc import IntegrityError
 
 from extentions import db
@@ -28,6 +29,7 @@ def single_post(slug):
 
 
 @blog.route('/posts/new/', methods=['POST'])
+@jwt_required
 def create_post():
     form = PostForm()
     if not form.validate_on_submit():
@@ -44,6 +46,7 @@ def create_post():
 
 
 @blog.route('/posts/delete/<int:post_id>/', methods=['DELETE'])
+@jwt_required
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
     db.session.delete(post)
