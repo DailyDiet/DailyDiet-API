@@ -926,3 +926,124 @@ response code will be **200**
 ```
 
 ----------
+
+### `/blog/<string:slug>`
+
+method: `GET`
+
+*input*:
+
+pass query parametr in URL
+
+*output*:
+
+response code will be **200**
+
+- return all posts
+
+```json
+{
+  "category": "recepie",
+  "content": "who konws!",
+  "post_id": 4,
+  "slug": "dovomi-post-daasdilywrdiet",
+  "summary": "pooof",
+  "title": "How Toqwewdasde Get Diet?"
+}
+```
+
+*in case of errors*:
+
+response code will be **404**
+
+```json
+{
+  "error": "post not exist!"
+}
+```
+
+----------
+
+### `/blog/posts/new/`
+
+method: `POST`
+
+*input*:
+
+Authorization Header:
+
+- Bearer \<refresh token>
+
+Body:
+
+- category
+- content
+- slug
+- summary
+- title
+
+```json
+{
+  "category": "recepie",
+  "content": "who konws!",
+  "slug": "dovomi-podsasdt-daasdilywrdiet",
+  "summary": "pooof",
+  "title": "How asdToqwewdasde Get Diet?"
+}
+```
+
+*output*:
+
+response code will be **200**
+
+```json
+{
+  "msg": "Post created successfully"
+}
+```
+
+*in case of errors*:
+
+response code will be **400**
+
+```json
+{
+  "error": {
+    "title": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+----------
+
+### `/posts/delete/<int:post_id>/`
+
+method: `DELETE`
+
+*input*:
+
+pass query parametr in URL
+
+Authorization Header:
+
+- Bearer \<refresh token>
+
+*output*:
+
+response code will be **204**
+
+- No content
+
+*in case of errors*:
+
+response code will be **403**
+
+```json
+{
+  "error": "access denied!"
+}
+```
+
+----------
