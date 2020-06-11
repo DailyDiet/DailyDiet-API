@@ -1,13 +1,24 @@
 from flask import jsonify, request
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from foods import foods
 from foods.diet import dovade, sevade, yevade
 from foods.utils import (beautify_category, get_foods_with_categories,
                          set_placeholder)
 from utils.decorators import confirmed_only
+from users.models import User
 
-from .models import Food
+from .models import Food, DietRecord
+from extentions import db
+
+
+def submit_diet_record(food_ids,jwt_identity):
+    user = User.query.filter_by(Email=jwt_identity).first()
+    if user is None:
+        return
+    diet_record = DietRecord(ownerId=user.id, diet=food_ids)
+    db.session.add(diet_record)
+    db.session.commit()
 
 
 @foods.route('/yevade/<int:calorie>', methods=['GET'])
@@ -22,6 +33,7 @@ def get_yevade(calorie):
         if catdog is None:
             return jsonify({'error': 'Not Found'}), 404
         else:
+            submit_diet_record([catdog[0].id],get_jwt_identity())
             return jsonify({'diet': [catdog[0].simple_view, catdog[1]]}), 200
     else:
         return jsonify({'error': 'I\'m a teapot'}), 418
@@ -42,6 +54,7 @@ def get_dovade(calorie):
         if catdog is None:
             return jsonify({'error': 'Not Found'}), 404
         else:
+            submit_diet_record([catdog[0].id, catdog[1].id],get_jwt_identity())
             return jsonify({'diet': [catdog[0].simple_view, catdog[1].simple_view, catdog[2]]}), 200
     else:
         return jsonify({'error': 'I\'m a teapot'}), 418
@@ -64,6 +77,7 @@ def get_sevade(calorie):
         if catdog is None:
             return jsonify({'error': 'Not Found'}), 404
         else:
+            submit_diet_record([catdog[0].id, catdog[1].id, catdog[2].id],get_jwt_identity())
             return jsonify(
                 {'diet': [catdog[0].simple_view, catdog[1].simple_view, catdog[2].simple_view, catdog[3]]}), 200
     else:

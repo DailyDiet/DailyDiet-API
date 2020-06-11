@@ -1,6 +1,6 @@
 import datetime
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy import Column, Integer, REAL, CHAR, VARCHAR, TIMESTAMP, TEXT, ForeignKey
+from sqlalchemy import Column, Integer, REAL, CHAR, VARCHAR, TIMESTAMP, TEXT, ForeignKey, JSON
 import json
 from flask_admin.contrib.sqla import ModelView
 from flask import jsonify
@@ -228,6 +228,13 @@ class FoodModelView(ModelView):
             'pasta'
         ]]
     }
+
+
+class DietRecord(db.Model):
+    id = Column(Integer(), primary_key=True)
+    generatedAt = Column('generated_at', TIMESTAMP(), nullable=False, default=datetime.datetime.now)
+    ownerId = Column('owner_id', Integer(), ForeignKey('users.id'), nullable=False)
+    diet = Column('diet', JSON(), nullable=False)
 
 
 db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)

@@ -20,6 +20,7 @@ class User(db.Model):
     ConfirmedOn = Column(DateTime(), nullable=True)
     FoodSet = db.relationship('Food', backref='author', lazy=True)
     PostSet = db.relationship('Post', backref='writer', lazy=True)
+    DietSet = db.relationship('DietRecord', backref='owner', lazy=True)
 
     def __init__(self, full_name, email, password, admin=False,
                  registerd_on=None, confirmed=False, confirmed_on=None):
@@ -53,4 +54,4 @@ class UserModelView(ModelView):
     column_filters = ['Admin', 'RegisteredOn', 'Confirmed', 'ConfirmedOn']
     edit_modal = False  # i don't know but it didn't work for true
     column_editable_list = ['Admin', 'Confirmed']
-    form_excluded_columns = ('FoodSet', )
+    form_excluded_columns = ('FoodSet',)
