@@ -11,6 +11,7 @@ from users.models import User
 
 
 @blog.route('/', methods=['GET'])
+@jwt_required
 def list_posts():
     posts = Post.query.order_by(Post.id.desc()).all()
     result = dict()
@@ -19,17 +20,18 @@ def list_posts():
         tmp['id'] = p.id
         slug = p.slug.replace(' ', '-')
         print(p.writer.FullName)
-        tmp = {'slug': slug, 'title': p.title, 'summary': p.summary, 'content': p.content, 'category': p.category, 'author_fullname': p.writer.FullName, 'author_email': p.writer.Email}
+        tmp = {'slug': slug, 'title': p.title, 'summary': p.summary, 'content': p.content, 'category': p.category, 'author_fullname': p.writer.FullName, 'author_email': p.writer.Email, 'current_user_mail': get_jwt_identity()}
         result.update({f'{p.id}': tmp})
     return jsonify(result), 200
 
 
 @blog.route('/<string:slug>', methods=['GET'])
+@jwt_required
 def single_post(slug):
     post = Post.query.filter(Post.slug == slug).first()
     if not post:
         return {'error': 'post not exist!'}, 404
-    result = {'post_id':post.id, 'slug': post.slug, 'title': post.title, 'summary': post.summary, 'content': post.content, 'category': post.category, 'author_fullname': post.writer.FullName, 'author_email': post.writer.Email}
+    result = {'post_id':post.id, 'slug': post.slug, 'title': post.title, 'summary': post.summary, 'content': post.content, 'category': post.category, 'author_fullname': post.writer.FullName, 'author_email': post.writer.Email, 'current_user_mail': get_jwt_identity()}
     return jsonify(result), 200
 
 
@@ -62,6 +64,7 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
     return {}, 204
+
 
 
 # @blog.route('/posts/modify/<int:post_id>/', methods=['PATCH'])

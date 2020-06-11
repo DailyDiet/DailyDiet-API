@@ -898,7 +898,11 @@ response code will be **422**
 
 method: `GET`
 
-*input*: **NONE**
+*input*:
+
+Authorization Header:
+
+- Bearer \<access token>
 
 *output*:
 
@@ -908,23 +912,35 @@ response code will be **200**
 
 ```json
 {
-  "1": {
+"1": {
     "author_email": "yasi_ommi@yahoo.com",
     "author_fullname": "Ken Adams",
     "category": "category",
     "content": "post content",
+    "current_user_mail": "mohammadhossein.malekpour@gmail.com",
     "slug": "some-slug",
     "summary": "post summery",
     "title": "sample post"
   },
-  "2": {
-    "author_email": "mohammadhossein.malekpour@gmail.com",
-    "author_fullname": "Mohammad Hossein Malekpour",
-    "category": "recepie",
-    "content": "who konws!",
-    "slug": "avaliwern-post-dailywrdiet",
-    "summary": "pooof",
-    "title": "How To Get Diet?"
+  "10": {
+    "author_email": "imanmalekian31@gmail.com",
+    "author_fullname": "iman123",
+    "category": "asd",
+    "content": "asd",
+    "current_user_mail": "mohammadhossein.malekpour@gmail.com",
+    "slug": "asdss",
+    "summary": "asdsss",
+    "title": "asdss"
+  },
+  "11": {
+    "author_email": "imanmalekian31@gmail.com",
+    "author_fullname": "iman123",
+    "category": "asd",
+    "content": "asdasd",
+    "current_user_mail": "mohammadhossein.malekpour@gmail.com",
+    "slug": "asdasd",
+    "summary": "asdas",
+    "title": "asdasd"
   }
 }
 ```
@@ -939,6 +955,10 @@ method: `GET`
 
 pass query parametr in URL
 
+Authorization Header:
+
+- Bearer \<access token>
+
 *output*:
 
 response code will be **200**
@@ -949,6 +969,7 @@ response code will be **200**
   "author_fullname": "Mohammad Hossein Malekpour",
   "category": "recepie",
   "content": "who konws!",
+  "current_user_mail": "mohammadhossein.malekpour@gmail.com",
   "post_id": 2,
   "slug": "avaliwern-post-dailywrdiet",
   "summary": "pooof",
@@ -976,7 +997,7 @@ method: `POST`
 
 Authorization Header:
 
-- Bearer \<refresh token>
+- Bearer \<access token>
 
 Body:
 
@@ -1032,7 +1053,7 @@ pass query parametr in URL
 
 Authorization Header:
 
-- Bearer \<refresh token>
+- Bearer \<access token>
 
 *output*:
 
