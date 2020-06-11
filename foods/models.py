@@ -19,9 +19,19 @@ class SearchableMixin(object):
             raise Exception("model doesn't have 'elastic_document' attribute")
 
         payload = instance.elastic_document
+
+        if not hasattr(instance, 'ingredients_summery'):
+            raise Exception("model doesn't have 'ingredients_summery' attribute")
+        ingredients = instance.ingredients_summery
+
+        if not hasattr(cls, '__ingredients_index__'):
+            raise Exception("class doesn't have '__ingredients_index__' attribute")
+
+        for ingredient_id, ingredient in ingredients.items():
+            elastic.index(index=cls.__ingredients_index__, body=ingredient, id=ingredient_id, doc_type='ingredient')
+
         if not hasattr(cls, '__indexname__'):
             raise Exception("class doesn't have '__indexname__' attribute")
-
         elastic.index(index=cls.__indexname__, body=payload, id=instance.id)
 
     @classmethod
@@ -84,7 +94,8 @@ class SearchableMixin(object):
 
 class Food(db.Model, SearchableMixin):
     __tablename__ = 'foods'
-    __indexname__ = 'foods'
+    __indexname__ = 'foods_new'
+    __ingredients_index__ = 'ingredients'
 
     id = Column('id', Integer(), primary_key=True)
     Calories = Column('calories', Integer())
@@ -172,11 +183,24 @@ class Food(db.Model, SearchableMixin):
             'name': recipe['food_name'],
             'description': recipe['description'],
             'category': recipe['category'],
+            'nutrition': {key: value / recipe['servings'] for key, value in recipe['nutrition'].items()},
             'tag_cloud': recipe['tag_cloud'],
             'ingredients': [ingredient['food']['food_name'] for ingredient in recipe['ingredients']],
-            'directions': [direction['text'] for direction in recipe['directions']]
+            'ingredient_ids': [ingredient['food']['id'] for ingredient in recipe['ingredients']],
+            'directions': [direction['text'] for direction in recipe['directions']],
+            'cook_time': recipe['cook_time'],
+            'prep_time': recipe['prep_time'],
+            'total_time': recipe['cook_time'] + recipe['prep_time']
         }
 
+        return payload
+
+    @property
+    def ingredients_summery(self):
+        payload = {}
+        recipe = self.recipe
+        for ingredient in recipe['ingredients']:
+            payload[ingredient['food']['id']] = ingredient['food']
         return payload
 
 
