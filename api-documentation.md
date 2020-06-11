@@ -898,7 +898,11 @@ response code will be **422**
 
 method: `GET`
 
-*input*: **NONE**
+*input*:
+
+Authorization Header:
+
+- Bearer \<access token>
 
 *output*:
 
@@ -908,20 +912,162 @@ response code will be **200**
 
 ```json
 {
-  "1": {
-    "category": null,
-    "content": "I don't know :)\r\ncheck flask doc!",
-    "slug": "how-to-use-flask",
-    "summary": "",
-    "title": "How To Use Flask?"
+"1": {
+    "author_email": "yasi_ommi@yahoo.com",
+    "author_fullname": "Ken Adams",
+    "category": "category",
+    "content": "post content",
+    "current_user_mail": "mohammadhossein.malekpour@gmail.com",
+    "slug": "some-slug",
+    "summary": "post summery",
+    "title": "sample post"
   },
-  "2": {
-    "category": "recepie",
-    "content": "who konws!",
-    "slug": "avalin-post-dailydiet",
-    "summary": "pooof",
-    "title": "How To Get Diet?"
+  "10": {
+    "author_email": "imanmalekian31@gmail.com",
+    "author_fullname": "iman123",
+    "category": "asd",
+    "content": "asd",
+    "current_user_mail": "mohammadhossein.malekpour@gmail.com",
+    "slug": "asdss",
+    "summary": "asdsss",
+    "title": "asdss"
+  },
+  "11": {
+    "author_email": "imanmalekian31@gmail.com",
+    "author_fullname": "iman123",
+    "category": "asd",
+    "content": "asdasd",
+    "current_user_mail": "mohammadhossein.malekpour@gmail.com",
+    "slug": "asdasd",
+    "summary": "asdas",
+    "title": "asdasd"
   }
+}
+```
+
+----------
+
+### `/blog/<string:slug>`
+
+method: `GET`
+
+*input*:
+
+pass query parametr in URL
+
+Authorization Header:
+
+- Bearer \<access token>
+
+*output*:
+
+response code will be **200**
+
+```json
+{
+  "author_email": "mohammadhossein.malekpour@gmail.com",
+  "author_fullname": "Mohammad Hossein Malekpour",
+  "category": "recepie",
+  "content": "who konws!",
+  "current_user_mail": "mohammadhossein.malekpour@gmail.com",
+  "post_id": 2,
+  "slug": "avaliwern-post-dailywrdiet",
+  "summary": "pooof",
+  "title": "How To Get Diet?"
+}
+```
+
+*in case of errors*:
+
+response code will be **404**
+
+```json
+{
+  "error": "post not exist!"
+}
+```
+
+----------
+
+### `/blog/posts/new/`
+
+method: `POST`
+
+*input*:
+
+Authorization Header:
+
+- Bearer \<access token>
+
+Body:
+
+- category
+- content
+- slug
+- summary
+- title
+
+```json
+{
+  "category": "recepie",
+  "content": "who konws!",
+  "slug": "dovomi-podsasdt-daasdilywrdiet",
+  "summary": "pooof",
+  "title": "How asdToqwewdasde Get Diet?"
+}
+```
+
+*output*:
+
+response code will be **200**
+
+```json
+{
+  "msg": "Post created successfully"
+}
+```
+
+*in case of errors*:
+
+response code will be **400**
+
+```json
+{
+  "error": {
+    "title": [
+      "This field is required."
+    ]
+  }
+}
+```
+
+----------
+
+### `/posts/delete/<int:post_id>/`
+
+method: `DELETE`
+
+*input*:
+
+pass query parametr in URL
+
+Authorization Header:
+
+- Bearer \<access token>
+
+*output*:
+
+response code will be **204**
+
+- No content
+
+*in case of errors*:
+
+response code will be **403**
+
+```json
+{
+  "error": "access denied!"
 }
 ```
 

@@ -1,13 +1,17 @@
-from foods import foods
 from flask import jsonify, request
-from foods.utils import get_foods_with_categories, set_placeholder, beautify_category
-from foods.diet import sevade, yevade, dovade
-from .models import Food
-from flask_jwt_extended import (jwt_required)
+from flask_jwt_extended import jwt_required
+
+from foods import foods
+from foods.diet import dovade, sevade, yevade
+from foods.utils import (beautify_category, get_foods_with_categories,
+                         set_placeholder)
 from utils.decorators import confirmed_only
+
+from .models import Food
 
 
 @foods.route('/yevade/<int:calorie>', methods=['GET'])
+@jwt_required
 def get_yevade(calorie):
     if calorie > 0:
         cat = ['breakfast, ''mostly_meat', 'pasta', 'main_dish', 'sandwich', 'appetizers', 'drink']
@@ -24,6 +28,7 @@ def get_yevade(calorie):
 
 
 @foods.route('/dovade/<int:calorie>', methods=['GET'])
+@jwt_required
 def get_dovade(calorie):
     if calorie > 0:
         cats1 = ['breakfast', 'sandwich', 'pasta', 'appetizers', 'drink']
@@ -43,6 +48,7 @@ def get_dovade(calorie):
 
 
 @foods.route('/sevade/<int:calorie>', methods=['GET'])
+@jwt_required
 def get_sevade(calorie):
     if calorie > 0:
         cats1 = ['breakfast', 'pasta', 'salad', 'sandwich', 'appetizers']
