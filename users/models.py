@@ -51,6 +51,6 @@ class UserModelView(ModelView):
     column_exclude_list = ['Password']
     column_searchable_list = ['FullName', 'Email']
     column_filters = ['Admin', 'RegisteredOn', 'Confirmed', 'ConfirmedOn']
-    edit_modal = False  # i don't know but i didn't work for true
+    edit_modal = False  # i don't know but it didn't work for true
     column_editable_list = ['Admin', 'Confirmed']
     form_excluded_columns = ('FoodSet', )
