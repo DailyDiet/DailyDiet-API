@@ -237,5 +237,13 @@ class DietRecord(db.Model):
     diet = Column('diet', JSON(), nullable=False)
 
 
+class DietRecordModelView(ModelView):
+    can_edit = True
+    column_display_pk = True
+    create_modal = True
+    edit_modal = True
+    column_labels = {'generatedAt': 'Generated At', 'diet': 'Diet ids'}
+
+
 db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
 db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
