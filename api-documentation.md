@@ -1281,7 +1281,7 @@ method: `POST`
 {
             "text": "text_to_search",
             "category" : "one of [mostly_meat, appetizers,drink,main_dish,sandwich,dessert,breakfast,protein_shake,salad,pasta,other]" ,
-            "ingredients": ["list of ingredient ids"]
+            "ingredients": ["list of ingredient ids"],
             "calories":{
                 "min":"optional",
                 "max":"optional"
