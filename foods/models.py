@@ -66,11 +66,17 @@ def build_query(input_json):
         if input_json.get(feature) is not None:
             if query.get('must') is None:
                 query['must'] = []
-            part = {}
+            part = {
+                'range': {}
+            }
             if input_json[feature].get('min') is not None or input_json[feature].get('max') is not None:
                 if input_json[feature].get('min') is not None:
+                    if part['range'].get(feature) is None:
+                        part['range'][feature] = {}
                     part['range'][feature]['gte'] = input_json[feature]['min']
                 if input_json[feature].get('max') is not None:
+                    if part['range'].get(feature) is None:
+                        part['range'][feature] = {}
                     part['range'][feature]['lte'] = input_json[feature]['min']
                 query['must'].append(part)
 

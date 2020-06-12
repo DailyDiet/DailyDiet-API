@@ -175,10 +175,10 @@ def food_advanced_search():
     page = 1 if input_json.get('page') is None else input_json['page']
     per_page = 10 if input_json.get('per_page') is None else input_json['per_page']
 
-    # if query == "" or query is None:
-    #     return jsonify({
-    #         'error': "query should exist in the request"
-    #     }), 422  # invalid input error
+    if len(input_json.items()) == 0:
+        return jsonify({
+            'error': "some query should exist in the request"
+        }), 422  # invalid input error
 
     if per_page > 50:
         return jsonify({
