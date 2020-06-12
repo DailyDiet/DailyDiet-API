@@ -36,7 +36,7 @@ def get_yevade(calorie):
             submit_diet_record([catdog[0].id], get_jwt_identity())
             return jsonify({'diet': [catdog[0].simple_view, catdog[1]]}), 200
     else:
-        return jsonify({'error': 'I\'m a teapot'}), 418
+        return jsonify({'error': 'Calorie value can\'t be zero'}), 418
 
 
 @foods.route('/dovade/<int:calorie>', methods=['GET'])
@@ -57,7 +57,7 @@ def get_dovade(calorie):
             submit_diet_record([catdog[0].id, catdog[1].id], get_jwt_identity())
             return jsonify({'diet': [catdog[0].simple_view, catdog[1].simple_view, catdog[2]]}), 200
     else:
-        return jsonify({'error': 'I\'m a teapot'}), 418
+        return jsonify({'error': 'Calorie value can\'t be zero'}), 418
 
 
 @foods.route('/sevade/<int:calorie>', methods=['GET'])
@@ -81,7 +81,7 @@ def get_sevade(calorie):
             return jsonify(
                 {'diet': [catdog[0].simple_view, catdog[1].simple_view, catdog[2].simple_view, catdog[3]]}), 200
     else:
-        return jsonify({'error': 'I\'m a teapot'}), 418
+        return jsonify({'error': 'Calorie value can\'t be zero'}), 418
 
 
 @foods.route('/recipe/<int:id>', methods=['GET'])
