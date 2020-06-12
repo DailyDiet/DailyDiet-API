@@ -898,11 +898,7 @@ response code will be **422**
 
 method: `GET`
 
-*input*:
-
-Authorization Header:
-
-- Bearer \<access token>
+*input*: **None**
 
 *output*:
 
@@ -955,10 +951,6 @@ method: `GET`
 
 pass query parametr in URL
 
-Authorization Header:
-
-- Bearer \<access token>
-
 *output*:
 
 response code will be **200**
@@ -969,7 +961,6 @@ response code will be **200**
   "author_fullname": "Mohammad Hossein Malekpour",
   "category": "recepie",
   "content": "who konws!",
-  "current_user_mail": "mohammadhossein.malekpour@gmail.com",
   "post_id": 2,
   "slug": "avaliwern-post-dailywrdiet",
   "summary": "pooof",
@@ -1068,6 +1059,57 @@ response code will be **403**
 ```json
 {
   "error": "access denied!"
+}
+```
+
+----------
+
+### `/blog/posts/user`
+
+method: `GET`
+
+*input*:
+
+Authorization Header:
+
+- Bearer \<access token>
+
+*output*:
+
+response code will be **200**
+
+```json
+{
+  "2": {
+    "author_email": "mohammadhossein.malekpour@gmail.com",
+    "author_fullname": "Mohammad Hossein Malekpour",
+    "category": "recepie",
+    "content": "who konws!",
+    "current_user_mail": "mohammadhossein.malekpour@gmail.com",
+    "slug": "avaliwern-post-dailywrdiet",
+    "summary": "pooof",
+    "title": "How To Get Diet?"
+  },
+  "3": {
+    "author_email": "mohammadhossein.malekpour@gmail.com",
+    "author_fullname": "Mohammad Hossein Malekpour",
+    "category": "recepie",
+    "content": "who konws!",
+    "current_user_mail": "mohammadhossein.malekpour@gmail.com",
+    "slug": "dovomi-post-dailywrdiet",
+    "summary": "pooof",
+    "title": "How Toqwewe Get Diet?"
+  },
+  "4": {
+    "author_email": "mohammadhossein.malekpour@gmail.com",
+    "author_fullname": "Mohammad Hossein Malekpour",
+    "category": "recepie",
+    "content": "who konws!",
+    "current_user_mail": "mohammadhossein.malekpour@gmail.com",
+    "slug": "dovomi-post-daasdilywrdiet",
+    "summary": "pooof",
+    "title": "How Toqwewdasde Get Diet?"
+  }
 }
 ```
 
