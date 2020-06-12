@@ -1130,18 +1130,72 @@ method: `GET`
 
 *input*:
 
+GET parameters:
+
+- page
+- per_page
+
 Authorization Header:
 
 - Bearer \<access token>
+
+*sample input*:
+```
+localhost:5000/foods/diets?page=1&per_page=2
+```
 
 *output*:
 
 response code will be **200**
 
+*sample output*:
 ```json
-{
-  "waiting for malekpoor": "...."
-}
+[
+  {
+    "diet": [
+      {
+        "category": "breakfast",
+        "id": 905755,
+        "image": "https://images.eatthismuch.com/site_media/img/905755_Shamarie84_a50c2b94-934f-4326-9af3-0e0f04d7b10f.png",
+        "nutrition": {
+          "calories": 443,
+          "fat": 18.6,
+          "fiber": 6.2,
+          "protein": 17.9
+        },
+        "thumbnail": "https://images.eatthismuch.com/site_media/thmb/905755_Shamarie84_a50c2b94-934f-4326-9af3-0e0f04d7b10f.png",
+        "title": "Peach Yogurt Parfait"
+      },
+      {
+        "category": "mostly_meat",
+        "id": 940743,
+        "image": "https://images.eatthismuch.com/site_media/img/325467_simmyras_cbf011a4-a8ef-4fac-b4bc-bcdd1f8770d4.png",
+        "nutrition": {
+          "calories": 1633,
+          "fat": 84.7,
+          "fiber": 8.8,
+          "protein": 112.4
+        },
+        "thumbnail": "https://images.eatthismuch.com/site_media/thmb/325467_simmyras_cbf011a4-a8ef-4fac-b4bc-bcdd1f8770d4.png",
+        "title": "Ham and Cheese Chicken Roll-ups"
+      },
+      {
+        "category": "breakfast",
+        "id": 983905,
+        "image": "https://images.eatthismuch.com/site_media/img/233507_ashleigh_c_hughes_9eab40e4-c8ad-488f-a381-f6e9342ed72d.png",
+        "nutrition": {
+          "calories": 214,
+          "fat": 18.7,
+          "fiber": 1.4,
+          "protein": 9.3
+        },
+        "thumbnail": "https://images.eatthismuch.com/site_media/thmb/233507_ashleigh_c_hughes_9eab40e4-c8ad-488f-a381-f6e9342ed72d.png",
+        "title": "Eggs & Greens"
+      }
+    ],
+    "time": "Fri, 12 Jun 2020 13:56:25 GMT"
+  }
+]
 ```
 
 in case of errors:
