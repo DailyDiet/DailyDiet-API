@@ -10,6 +10,73 @@ from wtforms import SelectField
 from elasticsearch_dsl import Q, Search
 
 
+def build_query(input_json):
+    query = {}
+    if input_json.get('text') is not None and input_json['text'] != '':
+        query['should'] = [
+            {
+                "multi_match": {
+                    "query": input_json['text'],
+                    "fields": [
+                        "name^6.0",
+                        "category^1.0",
+                        "description^3.0",
+                        "tag_cloud^3.0",
+                        "ingredients^2.0",
+                        "directions^1.5",
+                        "author^1.0"
+                    ],
+                    "type": "phrase_prefix",
+                    "lenient": "true"
+                }
+            },
+        ]
+        query['boost'] = 1
+        query['minimum_should_match'] = 1
+
+    # building must query
+    if input_json.get('category') is not None:
+        if query.get('must') is None:
+            query['must'] = []
+        query['must'].append({
+            "match": {
+                "category": input_json['category']
+            }
+        })
+
+    for feature in ["calories", "carbs", "fats", "proteins"]:
+        if input_json.get(feature) is not None:
+            if query.get('must') is None:
+                query['must'] = []
+            part = {
+                'range':{}
+            }
+            if input_json[feature].get('min') is not None or input_json[feature].get('max') is not None:
+                if input_json[feature].get('min') is not None:
+                    if part['range'].get(f'nutrition.{feature}') is None:
+                        part['range'][f'nutrition.{feature}'] = {}
+                    part['range'][f'nutrition.{feature}']['gte'] = input_json[feature]['min']
+                if input_json[feature].get('max') is not None:
+                    if part['range'].get(f'nutrition.{feature}') is None:
+                        part['range'][f'nutrition.{feature}'] = {}
+                    part['range'][f'nutrition.{feature}']['lte'] = input_json[feature]['min']
+                query['must'].append(part)
+
+    for feature in ["cook_time", "prep_time", "total_time"]:
+        if input_json.get(feature) is not None:
+            if query.get('must') is None:
+                query['must'] = []
+            part = {}
+            if input_json[feature].get('min') is not None or input_json[feature].get('max') is not None:
+                if input_json[feature].get('min') is not None:
+                    part['range'][feature]['gte'] = input_json[feature]['min']
+                if input_json[feature].get('max') is not None:
+                    part['range'][feature]['lte'] = input_json[feature]['min']
+                query['must'].append(part)
+
+    return query
+
+
 class SearchTimedOutException(Exception):
     pass
 
@@ -129,6 +196,39 @@ class SearchableMixin(object):
             raise SearchTimedOutException()
         total = search_results['hits']['total']['value']
         return [hit['_source'] for hit in search_results['hits']['hits']], total
+
+    @classmethod
+    def advanced_query(cls, input_json):
+        if elastic is None:
+            return [], 0
+        page = 1 if input_json.get('page') is None else input_json['page']
+        per_page = 10 if input_json.get('per_page') is None else input_json['per_page']
+        search = Search(using=elastic, index=cls.__indexname__)
+        elastic_query = Q('bool',**build_query(input_json))
+        from_index = (page - 1) * per_page
+        size = per_page
+        search = search.query(elastic_query)
+        if input_json.get('ingredients') is not None:
+            for ing_id in input_json['ingredients']:
+                search = search.filter('term', ingredient_ids=ing_id)
+
+        search_results = search[from_index: from_index + size].execute().to_dict()
+
+        if search_results['timed_out']:
+            raise SearchTimedOutException()
+        ids = [int(hit['_id']) for hit in search_results['hits']['hits']]
+        return ids, search_results['hits']['total']['value']
+
+    @classmethod
+    def advanced_search(cls, input_json):
+        ids, total = cls.advanced_query(input_json)
+        if total == 0:
+            return cls.query.filter_by(id=0), 0  # just returning nothing
+        when = []
+        for i in range(len(ids)):
+            when.append((ids[i], i))
+        return cls.query.filter(cls.id.in_(ids)).order_by(
+            db.case(when, value=cls.id)), total
 
     @classmethod
     def reindex(cls):

@@ -33,8 +33,8 @@ def set_placeholder(recipe):
 
 
 def beautify_category(category: str):
-    return category.replace('_', ' ')
+    return category.replace('_', ' ').lower()
 
 
 def uglify_category(category: str):
-    return category.replace(' ', '_')
+    return category.replace(' ', '_').lower()

@@ -13,7 +13,6 @@ from .models import Food, DietRecord, SearchTimedOutException
 from extentions import db
 
 
-
 def submit_diet_record(food_ids, jwt_identity):
     user = User.query.filter_by(Email=jwt_identity).first()
     if user is None:
@@ -146,6 +145,52 @@ def food_search():
             "error": "search request timed out."
         }), 408
 
+    return jsonify({
+        'results': [set_placeholder(result.simple_view) for result in results.all()],
+        'total_results_count': count
+    })
+
+
+@foods.route('/search', methods=['POST'])
+def food_advanced_search():
+    """
+    advanced + full text search using elasticsearch
+    http post content json parameters:
+        query: query to search with below format
+        {
+            "text": text_to_search | null | "",
+            "category" : cat (one of 13 categories),
+            "ingredients": [list of ingredient ids]
+            "calories, carbs , fats ,proteins , cook_time ,prep_time , total_time, :{
+                "min":optional,
+                "max":optional
+            },
+            "page": pagination page number
+            "per_page": pagination per_page count
+        }
+
+    :return:
+    """
+    input_json = request.get_json()
+    page = 1 if input_json.get('page') is None else input_json['page']
+    per_page = 10 if input_json.get('per_page') is None else input_json['per_page']
+
+    # if query == "" or query is None:
+    #     return jsonify({
+    #         'error': "query should exist in the request"
+    #     }), 422  # invalid input error
+
+    if per_page > 50:
+        return jsonify({
+            'error': 'per_page should not be more than 50'
+        }), 422
+
+    try:
+        results, count = Food.advanced_search(input_json)
+    except SearchTimedOutException as e:
+        return jsonify({
+            "error": "search request timed out."
+        }), 408
 
     return jsonify({
         'results': [set_placeholder(result.simple_view) for result in results.all()],
@@ -184,7 +229,7 @@ def ingredient_search():
             "error": "search request timed out."
         }), 408
 
-    #setting placeholder
+    # setting placeholder
     for result in results:
         if result['primary_thumbnail'] is None:
             result['primary_thumbnail'] = Config.PLACEHOLDERS['thumbnail']['ingredient']
@@ -196,7 +241,7 @@ def ingredient_search():
 
 
 @jwt_required
-@foods.route('/diets')
+@foods.route('/diets', methods=['GET'])
 def get_diet_records():
     page = int(request.args.get('page', 1))
     per_page = int(request.args.get('per_page', 10))
