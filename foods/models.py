@@ -7,7 +7,7 @@ from flask import jsonify
 from config import Config
 from extentions import db, elastic
 from wtforms import SelectField
-# from elasticsearch_dsl import Q, Search
+from elasticsearch_dsl import Q, Search
 
 
 class SearchTimedOutException(Exception):
