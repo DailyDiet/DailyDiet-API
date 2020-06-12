@@ -250,7 +250,7 @@ def get_diet_records():
         return {
                    "error": "user not found"
                }, 404
-    results = DietRecord.query.filter(DietRecord.ownerId == user.id).order_by('generated_at desc') \
+    results = DietRecord.query.filter(DietRecord.ownerId == user.id).order_by(DietRecord.generatedAt.desc()) \
         .limit(per_page) \
         .offset((page - 1) * per_page).all()
 
@@ -261,4 +261,4 @@ def get_diet_records():
             "time": diet_record.generatedAt
         })
 
-    return payload
+    return jsonify(payload)
