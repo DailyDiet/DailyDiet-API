@@ -49,7 +49,8 @@ class Config(object):
             "protein_shake": "https://img.icons8.com/color/7x/protein.png",
             "salad": "https://img.icons8.com/color/7x/salad.png",
             "pasta": "https://img.icons8.com/color/7x/spaghetti.png",
-            "other": "https://img.icons8.com/color/7x/cookbook.png"
+            "other": "https://img.icons8.com/color/7x/cookbook.png",
+            "ingredient": "https://img.icons8.com/color/7x/grocery-bag.png"
         },
         "thumbnail": {
             "mostly_meat": "https://img.icons8.com/color/2x/steak.png",
@@ -62,7 +63,8 @@ class Config(object):
             "protein_shake": "https://img.icons8.com/color/2x/protein.png",
             "salad": "https://img.icons8.com/color/2x/salad.png",
             "pasta": "https://img.icons8.com/color/2x/spaghetti.png",
-            "other": "https://img.icons8.com/color/2x/cookbook.png"
+            "other": "https://img.icons8.com/color/2x/cookbook.png",
+            "ingredient":"https://img.icons8.com/color/2x/grocery-bag.png"
         }
     }
 
