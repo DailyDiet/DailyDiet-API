@@ -1270,7 +1270,7 @@ status code will be **408**
 
 ---------
 
-### `/foods/search/ingredient`
+### `/foods/search`
 advanced search in foods
 
 method: `POST`
@@ -1279,7 +1279,7 @@ method: `POST`
 
 ```json
 {
-            "text": "text_to_search" | null | "",
+            "text": "text_to_search",
             "category" : "one of [mostly_meat, appetizers,drink,main_dish,sandwich,dessert,breakfast,protein_shake,salad,pasta,other]" ,
             "ingredients": ["list of ingredient ids"]
             "calories":{
