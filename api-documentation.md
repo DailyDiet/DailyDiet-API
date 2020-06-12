@@ -790,12 +790,12 @@ response code will be **200**
 
 ```json
 {
-        "results": [ "list views.."],
+        "results": [ "list of simple views.."],
         "total_results_count": "count..."
 }
 ```
 
-*sample input*
+*sample output*
 
 ```json
 {
@@ -889,6 +889,15 @@ response code will be **422**
 ```json
 {
             "error": "per_page should not be more than 50"
+}
+```
+
+3- if search is timed out.
+
+status code will be **408**
+```json
+{
+            "error": "search request timed out."
 }
 ```
 
@@ -1114,3 +1123,396 @@ response code will be **200**
 ```
 
 ----------
+
+### `/foods/diets`
+
+method: `GET`
+
+*input*:
+
+Authorization Header:
+
+- Bearer \<access token>
+
+*output*:
+
+response code will be **200**
+
+```json
+{
+  "waiting for malekpoor": "...."
+}
+```
+
+in case of errors:
+
+- Logged in user is `NULL`
+
+*output*:
+
+response code will be **404**
+
+```json
+{
+       "error": "user not found"
+}
+```
+
+------------
+
+### `/foods/search/ingredient`
+text-search between ingredients in order to choose some of them to include in a recipe.
+(but it's not excluded to this)
+
+method: `GET`
+
+*input*:
+GET method parameters:
+
+- query: text to search
+- page:pagination page, default value is 1
+- page:items per page, default value is 10
+
+*sample input*:
+
+```
+/foods/search/ingredient?query=Mango
+```
+
+*output*:
+
+response code will be **200**
+
+- total results count in the elasticsearch
+- ingredients info ordered by relevance
+
+```json
+{
+        "results": [ "list of simple views.."],
+        "total_results_count": "count..."
+}
+```
+
+*sample output*:
+
+```json
+{
+  "results": [
+    {
+      "food_name": "Frozen Mango", 
+      "id": 163245, 
+      "nutrition": {
+        "calories": 70.0, 
+        "carbs": 19.0, 
+        "fats": 0.0, 
+        "proteins": 1.0
+      }, 
+      "primary_thumbnail": "https://images.eatthismuch.com/site_media/thmb/163245_simmyras_81adf045-0657-4bd9-8603-af3740b0e540.png"
+    }, 
+    {
+      "food_name": "Mango Chutney", 
+      "id": 448267, 
+      "nutrition": {
+        "calories": 25.0, 
+        "carbs": 7.0, 
+        "fats": 0.0, 
+        "proteins": 0.0
+      }, 
+      "primary_thumbnail": "https://images.eatthismuch.com/site_media/thmb/448267_RedHawk5_6af04abe-c233-4908-83ed-6891e6306fc6.png"
+    }, 
+    {
+      "food_name": "Mango Juice", 
+      "id": 85585, 
+      "nutrition": {
+        "calories": 30.0, 
+        "carbs": 7.0, 
+        "fats": 0.0, 
+        "proteins": 0.0
+      }, 
+      "primary_thumbnail": "https://img.icons8.com/color/2x/grocery-bag.png"
+    }
+  ], 
+  "total_results_count": 3
+}
+```
+
+
+*in case of errors*:
+
+1- if you don't pass query parameter in the url
+
+response code will be **422**
+
+```json
+{
+            "error": "query should exist in the request"
+}
+```
+
+2- if per_page value is more than 50
+
+response code will be **422**
+
+```json
+{
+            "error": "per_page should not be more than 50"
+}
+```
+
+3- if search is timed out.
+
+status code will be **408**
+```json
+{
+            "error": "search request timed out."
+}
+```
+
+---------
+
+### `/foods/search/ingredient`
+advanced search in foods
+
+method: `POST`
+
+*input*:
+
+```json
+{
+            "text": "text_to_search" | null | "",
+            "category" : "one of [mostly_meat, appetizers,drink,main_dish,sandwich,dessert,breakfast,protein_shake,salad,pasta,other]" ,
+            "ingredients": ["list of ingredient ids"]
+            "calories":{
+                "min":"optional",
+                "max":"optional"
+            },
+            "carbs": {
+                "min":"optional",
+                "max":"optional"
+            } , 
+            "fats":  {
+                "min":"optional",
+                "max":"optional"
+            },
+            "proteins": {
+                "min":"optional",
+                "max":"optional"
+            } , 
+            "cook_time":{
+                "min":"optional",
+                "max":"optional"
+            }  ,
+            "prep_time": {
+                "min":"optional",
+                "max":"optional"
+            } , 
+            "total_time": {
+                "min":"optional",
+                "max":"optional"
+            }, 
+            "page": "pagination page number (default is 1)" ,
+            "per_page": "pagination per_page count (default is 10)"
+}
+```
+*output*:
+response code will be **200**
+
+- total results count in the elasticsearch
+- food sample view of foods found int the search ordered by relevance
+
+```json
+{
+        "results": [ "list of simple views.."],
+        "total_results_count": "count..."
+}
+```
+*in case of errors*:
+
+1- if you don't pass query parameter in the url
+
+response code will be **422**
+
+```json
+{
+            "error": "some query should exist in the request"
+}
+```
+
+2- if per_page value is more than 50
+
+response code will be **422**
+
+```json
+{
+            "error": "per_page should not be more than 50"
+}
+```
+
+3- if search is timed out.
+
+status code will be **408**
+```json
+{
+            "error": "search request timed out."
+}
+```
+
+*sample input 1*:
+```json
+{
+	"text":"avocado",
+	"calories":{
+		"min":200
+	},
+	"cook_time":{
+		"min":20,
+		"max":30
+	}
+}
+```
+
+*sample output 1*:
+```json
+{
+    "results": [
+        {
+            "category": "breakfast",
+            "id": 906721,
+            "image": "https://images.eatthismuch.com/site_media/img/270860_mensuramjr_cd47fe9f-edb6-42cd-bcb0-766f8eaa3914.png",
+            "nutrition": {
+                "calories": 393,
+                "fat": 34.2,
+                "fiber": 13.5,
+                "protein": 10.3
+            },
+            "thumbnail": "https://images.eatthismuch.com/site_media/thmb/270860_mensuramjr_cd47fe9f-edb6-42cd-bcb0-766f8eaa3914.png",
+            "title": "Avocado Egg Bake"
+        },
+        {
+            "category": "pasta",
+            "id": 1015979,
+            "image": "https://img.icons8.com/color/7x/spaghetti.png",
+            "nutrition": {
+                "calories": 935,
+                "fat": 41.7,
+                "fiber": 9.7,
+                "protein": 49.5
+            },
+            "thumbnail": "https://img.icons8.com/color/2x/spaghetti.png",
+            "title": "Creamy Chicken Avocado Pasta"
+        },
+        {
+            "category": "sandwich",
+            "id": 906763,
+            "image": "https://images.eatthismuch.com/site_media/img/906763_JoseBaltazar_b00f5694-fd97-4f90-bc91-290a5d72257d.jpg",
+            "nutrition": {
+                "calories": 675,
+                "fat": 36.1,
+                "fiber": 16.9,
+                "protein": 50.8
+            },
+            "thumbnail": "https://images.eatthismuch.com/site_media/thmb/906763_JoseBaltazar_b00f5694-fd97-4f90-bc91-290a5d72257d.jpg",
+            "title": "Chicken and Avocado Sandwich"
+        },
+        {
+            "category": "mostly_meat",
+            "id": 905623,
+            "image": "https://images.eatthismuch.com/site_media/img/264808_tharwood_e5e0c43d-bbf4-4006-875f-a0e48fef3302.png",
+            "nutrition": {
+                "calories": 260,
+                "fat": 18.1,
+                "fiber": 3.4,
+                "protein": 19.5
+            },
+            "thumbnail": "https://images.eatthismuch.com/site_media/thmb/264808_tharwood_e5e0c43d-bbf4-4006-875f-a0e48fef3302.png",
+            "title": "Ham, Egg, and Cheese Cupcake"
+        },
+        {
+            "category": "sandwich",
+            "id": 211831,
+            "image": "https://images.eatthismuch.com/site_media/img/211831_ZenKari_967deee5-b5c2-4cf1-8544-9ff7757b0931.png",
+            "nutrition": {
+                "calories": 1184,
+                "fat": 54.3,
+                "fiber": 29,
+                "protein": 33.6
+            },
+            "thumbnail": "https://images.eatthismuch.com/site_media/thmb/211831_ZenKari_967deee5-b5c2-4cf1-8544-9ff7757b0931.png",
+            "title": "Nutribullet Portabella Burgers"
+        }
+    ],
+    "total_results_count": 10
+}
+```
+
+*sample input 2*:
+```json
+{
+	"text":"avocado"
+}
+```
+
+*sample output 2*:
+```json
+{
+    "results": [
+        {
+            "category": "other",
+            "id": 390740,
+            "image": "https://images.eatthismuch.com/site_media/img/390740_erin_m_11094712-ba5d-4c9b-b0ad-278907f8d1e5.png",
+            "nutrition": {
+                "calories": 541,
+                "fat": 42.2,
+                "fiber": 13.9,
+                "protein": 26.1
+            },
+            "thumbnail": "https://images.eatthismuch.com/site_media/thmb/390740_erin_m_11094712-ba5d-4c9b-b0ad-278907f8d1e5.png",
+            "title": "Baked Seafood Stuffed Avocados"
+        },
+        {
+            "category": "main_dish",
+            "id": 943329,
+            "image": "https://images.eatthismuch.com/site_media/img/331372_bbebber_dacfd09e-5d58-4e24-bdeb-1dc6ce82b16c.png",
+            "nutrition": {
+                "calories": 145,
+                "fat": 10.8,
+                "fiber": 6.8,
+                "protein": 2.1
+            },
+            "thumbnail": "https://images.eatthismuch.com/site_media/thmb/331372_bbebber_dacfd09e-5d58-4e24-bdeb-1dc6ce82b16c.png",
+            "title": "Strawberry Salsa Stuffed Avocados"
+        }
+    ],
+    "total_results_count": 418
+}
+```
+
+*sample input 3*:
+```json
+{
+	"ingredients":[4914 ,2057,2042]
+}
+```
+
+*sample output 3*:
+found foods contain all the ingredients that we have given ids.
+```json
+{
+    "results": [
+        {
+            "category": "pasta",
+            "id": 57154,
+            "image": "https://img.icons8.com/color/7x/spaghetti.png",
+            "nutrition": {
+                "calories": 2701,
+                "fat": 69.7,
+                "fiber": 39.3,
+                "protein": 102.8
+            },
+            "thumbnail": "https://img.icons8.com/color/2x/spaghetti.png",
+            "title": "Pasta Puttanesca"
+        }
+    ],
+    "total_results_count": 1
+}
+```
