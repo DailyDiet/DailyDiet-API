@@ -26,7 +26,7 @@ def submit_diet_record(food_ids, jwt_identity):
 @jwt_required
 def get_yevade(calorie):
     if calorie > 0:
-        cat = ['breakfast, ''mostly_meat', 'pasta', 'main_dish', 'sandwich', 'appetizers', 'drink']
+        cat = ['breakfast', 'mostly_meat', 'pasta', 'main_dish', 'sandwich', 'appetizers', 'drink']
         dog = get_foods_with_categories(cat)
 
         catdog = yevade(dog, calorie)
@@ -37,15 +37,15 @@ def get_yevade(calorie):
             submit_diet_record([catdog[0].id], get_jwt_identity())
             return jsonify({'diet': [catdog[0].simple_view, catdog[1]]}), 200
     else:
-        return jsonify({'error': 'I\'m a teapot'}), 418
+        return jsonify({'error': 'Calorie value can\'t be zero'}), 418
 
 
 @foods.route('/dovade/<int:calorie>', methods=['GET'])
 @jwt_required
 def get_dovade(calorie):
     if calorie > 0:
-        cats1 = ['breakfast', 'sandwich', 'pasta', 'appetizers', 'drink']
-        cats2 = ['mostly_meat', 'pasta', 'main_dish', 'sandwich', 'appetizers']
+        cats1 = ['breakfast', 'sandwich', 'pasta', 'appetizers', 'drink', 'mostly_meat', 'appetizers', 'mostly_meat']
+        cats2 = ['mostly_meat', 'pasta', 'main_dish', 'sandwich', 'appetizers', 'breakfast', 'drink']
 
         dogs1 = get_foods_with_categories(cats1)
         dogs2 = get_foods_with_categories(cats2)
@@ -58,16 +58,16 @@ def get_dovade(calorie):
             submit_diet_record([catdog[0].id, catdog[1].id], get_jwt_identity())
             return jsonify({'diet': [catdog[0].simple_view, catdog[1].simple_view, catdog[2]]}), 200
     else:
-        return jsonify({'error': 'I\'m a teapot'}), 418
+        return jsonify({'error': 'Calorie value can\'t be zero'}), 418
 
 
 @foods.route('/sevade/<int:calorie>', methods=['GET'])
 @jwt_required
 def get_sevade(calorie):
     if calorie > 0:
-        cats1 = ['breakfast', 'pasta', 'salad', 'sandwich', 'appetizers']
-        cats2 = ['mostly_meat', 'pasta', 'main_dish', 'sandwich']
-        cats3 = ['dessert', 'other', 'salad', 'side_dish', 'drink', 'main_dish', 'pasta']
+        cats1 = ['breakfast', 'pasta', 'salad', 'sandwich', 'appetizers', 'drink']
+        cats2 = ['mostly_meat', 'pasta', 'main_dish', 'sandwich', 'breakfast', 'drink', 'salad', 'breakfast']
+        cats3 = ['dessert', 'other', 'salad', 'side_dish', 'drink', 'main_dish', 'pasta', 'breakfast']
 
         dogs1 = get_foods_with_categories(cats1)
         dogs2 = get_foods_with_categories(cats2)
@@ -82,7 +82,7 @@ def get_sevade(calorie):
             return jsonify(
                 {'diet': [catdog[0].simple_view, catdog[1].simple_view, catdog[2].simple_view, catdog[3]]}), 200
     else:
-        return jsonify({'error': 'I\'m a teapot'}), 418
+        return jsonify({'error': 'Calorie value can\'t be zero'}), 418
 
 
 @foods.route('/recipe/<int:id>', methods=['GET'])
