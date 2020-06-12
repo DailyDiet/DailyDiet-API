@@ -240,8 +240,8 @@ def ingredient_search():
     })
 
 
-@jwt_required
 @foods.route('/diets', methods=['GET'])
+@jwt_required
 def get_diet_records():
     page = int(request.args.get('page', 1))
     per_page = int(request.args.get('per_page', 10))
