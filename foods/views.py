@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
+from config import Config
 from foods import foods
 from foods.diet import dovade, sevade, yevade
 from foods.utils import (beautify_category, get_foods_with_categories,
@@ -8,8 +9,9 @@ from foods.utils import (beautify_category, get_foods_with_categories,
 from utils.decorators import confirmed_only
 from users.models import User
 
-from .models import Food, DietRecord
+from .models import Food, DietRecord, SearchTimedOutException
 from extentions import db
+
 
 
 def submit_diet_record(food_ids, jwt_identity):
@@ -137,10 +139,58 @@ def food_search():
             'error': 'per_page should not be more than 50'
         }), 422
 
-    results, count = Food.search(query, page, per_page)
+    try:
+        results, count = Food.search(query, page, per_page)
+    except SearchTimedOutException as e:
+        return jsonify({
+            "error": "search request timed out."
+        }), 408
+
 
     return jsonify({
         'results': [set_placeholder(result.simple_view) for result in results.all()],
+        'total_results_count': count
+    })
+
+
+@foods.route('/search/ingredient', methods=['GET'])
+def ingredient_search():
+    """
+    ingredient full text search using elasticsearch
+    http parameters:
+        query: text to search
+        page: pagination page number
+        per_page: pagination per_page count
+    :return:
+    """
+    query = request.args.get('query')
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 10))
+
+    if query == "" or query is None:
+        return jsonify({
+            'error': "query should exist in the request"
+        }), 422  # invalid input error
+
+    if per_page > 50:
+        return jsonify({
+            'error': 'per_page should not be more than 50'
+        }), 422
+
+    try:
+        results, count = Food.ingredient_search(query, page, per_page)
+    except SearchTimedOutException as e:
+        return jsonify({
+            "error": "search request timed out."
+        }), 408
+
+    #setting placeholder
+    for result in results:
+        if result['primary_thumbnail'] is None:
+            result['primary_thumbnail'] = Config.PLACEHOLDERS['thumbnail']['ingredient']
+
+    return jsonify({
+        'results': results,
         'total_results_count': count
     })
 

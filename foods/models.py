@@ -10,6 +10,10 @@ from wtforms import SelectField
 from elasticsearch_dsl import Q, Search
 
 
+class SearchTimedOutException(Exception):
+    pass
+
+
 class SearchableMixin(object):
 
     @classmethod
@@ -76,9 +80,7 @@ class SearchableMixin(object):
         search = search.query(elastic_query)
         search_results = search[from_index: from_index + size].execute().to_dict()
         if search_results['timed_out']:
-            return {
-                       "error": "search request timed out."
-                   }, 408
+            raise SearchTimedOutException()
 
         ids = [int(hit['_id']) for hit in search_results['hits']['hits']]
         return ids, search_results['hits']['total']['value']
@@ -114,6 +116,19 @@ class SearchableMixin(object):
             if isinstance(obj, SearchableMixin):
                 cls.remove_from_index(obj)
         session._changes = None
+
+    @classmethod
+    def ingredient_search(cls, expression, page=1, per_page=10):
+        if elastic is None:
+            return [], 0
+        search_results = elastic.search(
+            index='ingredients',
+            body={'query': {'multi_match': {'query': expression, 'fields': ['food_name']}},
+                  'from': (page - 1) * per_page, 'size': per_page})
+        if search_results['timed_out']:
+            raise SearchTimedOutException()
+        total = search_results['hits']['total']['value']
+        return [hit['_source'] for hit in search_results['hits']['hits']], total
 
     @classmethod
     def reindex(cls):
