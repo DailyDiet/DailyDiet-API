@@ -12,7 +12,7 @@ from .models import Food, DietRecord
 from extentions import db
 
 
-def submit_diet_record(food_ids,jwt_identity):
+def submit_diet_record(food_ids, jwt_identity):
     user = User.query.filter_by(Email=jwt_identity).first()
     if user is None:
         return
@@ -33,7 +33,7 @@ def get_yevade(calorie):
         if catdog is None:
             return jsonify({'error': 'Not Found'}), 404
         else:
-            submit_diet_record([catdog[0].id],get_jwt_identity())
+            submit_diet_record([catdog[0].id], get_jwt_identity())
             return jsonify({'diet': [catdog[0].simple_view, catdog[1]]}), 200
     else:
         return jsonify({'error': 'I\'m a teapot'}), 418
@@ -54,7 +54,7 @@ def get_dovade(calorie):
         if catdog is None:
             return jsonify({'error': 'Not Found'}), 404
         else:
-            submit_diet_record([catdog[0].id, catdog[1].id],get_jwt_identity())
+            submit_diet_record([catdog[0].id, catdog[1].id], get_jwt_identity())
             return jsonify({'diet': [catdog[0].simple_view, catdog[1].simple_view, catdog[2]]}), 200
     else:
         return jsonify({'error': 'I\'m a teapot'}), 418
@@ -77,7 +77,7 @@ def get_sevade(calorie):
         if catdog is None:
             return jsonify({'error': 'Not Found'}), 404
         else:
-            submit_diet_record([catdog[0].id, catdog[1].id, catdog[2].id],get_jwt_identity())
+            submit_diet_record([catdog[0].id, catdog[1].id, catdog[2].id], get_jwt_identity())
             return jsonify(
                 {'diet': [catdog[0].simple_view, catdog[1].simple_view, catdog[2].simple_view, catdog[3]]}), 200
     else:
@@ -143,3 +143,27 @@ def food_search():
         'results': [set_placeholder(result.simple_view) for result in results.all()],
         'total_results_count': count
     })
+
+
+@jwt_required
+@foods.route('/diets')
+def get_diet_records():
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 10))
+    user = User.query.filter_by(Email=get_jwt_identity()).first()
+    if user is None:
+        return {
+                   "error": "user not found"
+               }, 404
+    results = DietRecord.query.filter(DietRecord.ownerId == user.id).order_by('generated_at desc') \
+        .limit(per_page) \
+        .offset((page - 1) * per_page).all()
+
+    payload = []
+    for diet_record in results:
+        payload.append({
+            "diet": [Food.query.get_or_404(food_id).simple_view for food_id in diet_record.diet],
+            "time": diet_record.generatedAt
+        })
+
+    return payload
