@@ -7,6 +7,7 @@ from flask import jsonify
 from config import Config
 from extentions import db, elastic
 from wtforms import SelectField
+from elasticsearch_dsl import Q, Search
 
 
 class SearchableMixin(object):
@@ -47,12 +48,40 @@ class SearchableMixin(object):
     def query_index(cls, query, page=1, per_page=10):
         if elastic is None:
             return [], 0
-        search = elastic.search(
-            index=cls.__indexname__,
-            body={'query': {'multi_match': {'query': query, 'fields': ['*']}},
-                  'from': (page - 1) * per_page, 'size': per_page})
-        ids = [int(hit['_id']) for hit in search['hits']['hits']]
-        return ids, search['hits']['total']['value']
+        search = Search(using=elastic, index=cls.__indexname__)
+        elastic_query = Q('bool',
+                          should=[
+                              {
+                                  "multi_match": {
+                                      "query": query,
+                                      "fields": [
+                                          "name^6.0",
+                                          "category^1.0",
+                                          "description^3.0",
+                                          "tag_cloud^3.0",
+                                          "ingredients^2.0",
+                                          "directions^1.5",
+                                          "author^1.0"
+                                      ],
+                                      "type": "phrase_prefix",
+                                      "lenient": "true"
+                                  }
+                              },
+
+                          ],
+                          boost=1,
+                          minimum_should_match=1)
+        from_index = (page - 1) * per_page
+        size = per_page
+        search = search.query(elastic_query)
+        search_results = search[from_index: from_index + size].execute().to_dict()
+        if search_results['timed_out']:
+            return {
+                       "error": "search request timed out."
+                   }, 408
+
+        ids = [int(hit['_id']) for hit in search_results['hits']['hits']]
+        return ids, search_results['hits']['total']['value']
 
     @classmethod
     def search(cls, expression, page=1, per_page=10):
